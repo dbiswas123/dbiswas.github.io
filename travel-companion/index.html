@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#FF6B6B">
+  <link rel="manifest" href="manifest.json">
+  <title>Travel Companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --coral: #FF6B6B;
+      --coral-light: #FF8E8E;
+      --turquoise: #4ECDC4;
+      --turquoise-light: #7EDDD6;
+      --golden: #FFE66D;
+      --golden-dark: #F0D15E;
+      --sunset: #F7AE5D;
+      --lavender: #A78BFA;
+      --pink: #F472B6;
+      --sky: #60A5FA;
+      --mint: #34D399;
+      --text-dark: #2C3E50;
+      --text-mid: #5A6B7E;
+      --text-light: #8896A6;
+      --bg-warm: #FFF9F0;
+      --bg-card: #FFFFFF;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --radius-sm: 12px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --safe-top: env(safe-area-inset-top, 20px);
+      --safe-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-warm);
+      color: var(--text-dark);
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html { height: -webkit-fill-available; }
+
+    /* ===== APP SHELL ===== */
+    .app {
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      background: var(--bg-warm);
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding-bottom: 100px;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.85); }
+      70% { transform: scale(1.03); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ===== WELCOME SCREEN ===== */
+    .welcome-hero {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--sunset) 50%, var(--golden) 100%);
+      padding: calc(var(--safe-top) + 40px) 24px 50px;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+
+    .welcome-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -20%;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+
+    .welcome-icon {
+      font-size: 56px;
+      margin-bottom: 8px;
+      display: block;
+      animation: popIn 0.6s ease;
+    }
+
+    .welcome-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 6px;
+      position: relative;
+    }
+
+    .welcome-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.9);
+      font-weight: 400;
+      position: relative;
+    }
+
+    .search-section {
+      padding: 0 20px;
+      margin-top: -28px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .search-box {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-box .icon { font-size: 22px; }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--text-dark);
+      background: transparent;
+    }
+
+    .search-box input::placeholder { color: var(--text-light); }
+
+    .search-results {
+      background: white;
+      border-radius: var(--radius-sm);
+      margin-top: 8px;
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+      display: none;
+    }
+
+    .search-results.show { display: block; }
+
+    .search-result-item {
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+      border-bottom: 1px solid #f0ece6;
+    }
+
+    .search-result-item:last-child { border-bottom: none; }
+    .search-result-item:hover, .search-result-item:active { background: #FFF5EE; }
+
+    .search-result-item .emoji { font-size: 28px; }
+
+    .search-result-item .info h4 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .search-result-item .info p {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      padding: 28px 24px 16px;
+      color: var(--text-dark);
+    }
+
+    .popular-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 0 20px;
+    }
+
+    .popular-card {
+      border-radius: var(--radius-md);
+      padding: 22px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+      color: white;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popular-card:active { transform: scale(0.96); }
+    .popular-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+
+    .popular-card .card-emoji {
+      font-size: 40px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .popular-card .card-name {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .popular-card .card-country {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 3px;
+    }
+
+    .popular-card:nth-child(1) { background: linear-gradient(135deg, #FF6B6B, #ee5a24); }
+    .popular-card:nth-child(2) { background: linear-gradient(135deg, #4ECDC4, #2eaf8f); }
+    .popular-card:nth-child(3) { background: linear-gradient(135deg, #A78BFA, #7c5cbf); }
+    .popular-card:nth-child(4) { background: linear-gradient(135deg, #F7AE5D, #e8913a); }
+    .popular-card:nth-child(5) { background: linear-gradient(135deg, #F472B6, #d946a8); }
+    .popular-card:nth-child(6) { background: linear-gradient(135deg, #60A5FA, #3b82f6); }
+
+    /* ===== TRIP SETUP SCREEN ===== */
+    .setup-header {
+      background: linear-gradient(135deg, var(--turquoise) 0%, var(--sky) 100%);
+      padding: calc(var(--safe-top) + 20px) 24px 40px;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      color: white;
+      position: relative;
+    }
+
+    .back-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.2s;
+    }
+
+    .back-btn:active { background: rgba(255,255,255,0.35); }
+
+    .setup-destination {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 4px;
+    }
+
+    .setup-destination-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .setup-form {
+      padding: 24px 20px;
+    }
+
+    .form-group {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .form-group input[type="date"],
+    .form-group select {
+      width: 100%;
+      border: 2px solid #f0ece6;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--text-dark);
+      background: var(--bg-warm);
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--turquoise);
+    }
+
+    .days-selector {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .days-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--turquoise);
+      background: white;
+      color: var(--turquoise);
+      font-size: 22px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .days-btn:active { background: var(--turquoise); color: white; }
+
+    .days-count {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--turquoise);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .days-label {
+      font-size: 13px;
+      color: var(--text-light);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 17px;
+      font-weight: 700;
+      font-family: inherit;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+
+    .btn-primary:active { transform: scale(0.97); }
+
+    .btn-generate {
+      background: linear-gradient(135deg, var(--coral), var(--sunset));
+      box-shadow: 0 4px 16px rgba(255,107,107,0.35);
+    }
+
+    /* ===== ITINERARY SCREEN ===== */
+    .itinerary-header {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--pink) 100%);
+      padding: calc(var(--safe-top) + 20px) 24px 24px;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      color: white;
+    }
+
+    .itinerary-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: background 0.2s;
+    }
+
+    .action-btn:active { background: rgba(255,255,255,0.35); }
+
+    .itin-dest-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+    }
+
+    .itin-meta {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 20px 20px 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .day-tabs::-webkit-scrollbar { display: none; }
+
+    .day-tab {
+      flex-shrink: 0;
+      padding: 10px 20px;
+      border-radius: 25px;
+      border: 2px solid #e8e2d9;
+      background: white;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .day-tab.active {
+      background: var(--coral);
+      color: white;
+      border-color: var(--coral);
+      box-shadow: 0 3px 12px rgba(255,107,107,0.3);
+    }
+
+    .timeline {
+      padding: 20px 20px 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 8px;
+      animation: slideUp 0.4s ease;
+      animation-fill-mode: both;
+    }
+
+    .timeline-item:nth-child(1) { animation-delay: 0.05s; }
+    .timeline-item:nth-child(2) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.15s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.2s; }
+    .timeline-item:nth-child(5) { animation-delay: 0.25s; }
+
+    .timeline-time {
+      min-width: 52px;
+      padding-top: 18px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-align: right;
+    }
+
+    .timeline-dot-line {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+
+    .timeline-line {
+      width: 2px;
+      flex: 1;
+      background: #e8e2d9;
+      margin-top: 4px;
+    }
+
+    .timeline-card {
+      flex: 1;
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 8px;
+    }
+
+    .timeline-card:active { transform: scale(0.98); }
+    .timeline-card:hover { box-shadow: var(--shadow-md); }
+
+    .timeline-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .timeline-card .card-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    .timeline-card .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .timeline-card .card-type {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .type-attraction { background: #FFF0F0; color: var(--coral); }
+    .type-food { background: #FFF8E6; color: #D4900A; }
+    .type-transport { background: #E8F8F5; color: var(--turquoise); }
+    .type-activity { background: #F0EAFF; color: var(--lavender); }
+    .type-rest { background: #E8F5E8; color: var(--mint); }
+
+    .timeline-card .card-desc {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .timeline-card .card-duration {
+      font-size: 12px;
+      color: var(--text-light);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ===== EDIT MODE ===== */
+    .edit-toolbar {
+      display: none;
+      padding: 12px 20px;
+      background: white;
+      border-radius: var(--radius-md);
+      margin: 16px 20px 0;
+      box-shadow: var(--shadow-sm);
+      gap: 8px;
+    }
+
+    .edit-toolbar.show { display: flex; }
+
+    .edit-toolbar-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #e8e2d9;
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-mid);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .edit-toolbar-btn:active { background: #f8f4ee; }
+    .edit-toolbar-btn.save { background: var(--turquoise); color: white; border-color: var(--turquoise); }
+
+    .timeline-card.editing {
+      border: 2px dashed var(--turquoise);
+      position: relative;
+    }
+
+    .timeline-card .delete-btn {
+      display: none;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--coral);
+      color: white;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-card.editing .delete-btn { display: flex; }
+
+    /* ===== RESTAURANT SEARCH ===== */
+    .restaurant-screen .setup-header {
+      background: linear-gradient(135deg, var(--sunset) 0%, var(--coral) 100%);
+    }
+
+    .restaurant-search-bar {
+      padding: 0 20px;
+      margin-top: -24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .restaurant-search-bar .search-box {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 8px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .filter-chips::-webkit-scrollbar { display: none; }
+
+    .filter-chip {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 2px solid #e8e2d9;
+      background: white;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-mid);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .filter-chip.active {
+      background: var(--sunset);
+      color: white;
+      border-color: var(--sunset);
+    }
+
+    .restaurant-list {
+      padding: 0 20px;
+    }
+
+    .restaurant-card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 14px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .restaurant-card:active { transform: scale(0.98); }
+
+    .restaurant-emoji {
+      font-size: 36px;
+      width: 60px;
+      height: 60px;
+      background: #FFF5EE;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .restaurant-info { flex: 1; }
+
+    .restaurant-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .restaurant-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+
+    .stars { color: #F7AE5D; }
+
+    .restaurant-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .restaurant-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: #FFF5EE;
+      color: var(--sunset);
+    }
+
+    .add-to-itin-btn {
+      background: var(--turquoise);
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      align-self: center;
+      transition: background 0.2s;
+    }
+
+    .add-to-itin-btn:active { background: #3ab5ad; }
+
+    /* ===== ATTRACTION DETAIL ===== */
+    .detail-hero {
+      padding: calc(var(--safe-top) + 20px) 24px 40px;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      color: white;
+      position: relative;
+    }
+
+    .detail-emoji {
+      font-size: 64px;
+      margin: 16px 0;
+      display: block;
+    }
+
+    .detail-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .detail-type-badge {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.2);
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 8px;
+      backdrop-filter: blur(8px);
+    }
+
+    .detail-content {
+      padding: 24px 20px;
+    }
+
+    .detail-section {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .detail-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .detail-section p {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    .detail-section .tip {
+      background: #FFF8E6;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #8B6914;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-add-detail {
+      background: linear-gradient(135deg, var(--turquoise), var(--sky));
+      box-shadow: 0 4px 16px rgba(78,205,196,0.3);
+    }
+
+    /* ===== SHARE SCREEN ===== */
+    .share-header {
+      background: linear-gradient(135deg, var(--lavender) 0%, var(--pink) 100%);
+      padding: calc(var(--safe-top) + 20px) 24px 40px;
+      border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+      color: white;
+    }
+
+    .share-preview {
+      background: white;
+      border-radius: var(--radius-md);
+      margin: -20px 20px 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 2;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .share-preview h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .share-preview .day-block {
+      margin-bottom: 12px;
+    }
+
+    .share-preview .day-block h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--coral);
+      margin-bottom: 6px;
+    }
+
+    .share-preview .day-block li {
+      font-size: 13px;
+      color: var(--text-mid);
+      margin-left: 16px;
+      margin-bottom: 3px;
+      line-height: 1.5;
+    }
+
+    .share-actions {
+      padding: 0 20px;
+    }
+
+    .share-btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.2s;
+    }
+
+    .share-btn:active { transform: scale(0.97); }
+
+    .share-btn.native {
+      background: linear-gradient(135deg, var(--lavender), var(--pink));
+      color: white;
+      box-shadow: 0 4px 16px rgba(167,139,250,0.3);
+    }
+
+    .share-btn.clipboard {
+      background: white;
+      color: var(--text-dark);
+      border: 2px solid #e8e2d9;
+    }
+
+    .share-btn.export {
+      background: linear-gradient(135deg, var(--turquoise), var(--mint));
+      color: white;
+      box-shadow: 0 4px 16px rgba(78,205,196,0.3);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--text-dark);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.4s ease;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* ===== ADD ITEM MODAL ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal-content {
+      background: white;
+      width: 100%;
+      max-width: 430px;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      padding: 28px 24px calc(var(--safe-bottom) + 24px);
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 4px;
+      margin: 0 auto 20px;
+    }
+
+    .modal-content h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .modal-content .form-group { box-shadow: none; border: 2px solid #f0ece6; }
+
+    .modal-content .form-group input,
+    .modal-content .form-group textarea,
+    .modal-content .form-group select {
+      width: 100%;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text-dark);
+      background: transparent;
+      resize: none;
+    }
+
+    .modal-content .form-group textarea { min-height: 60px; }
+
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .modal-btns .btn-cancel {
+      flex: 1;
+      padding: 16px;
+      border: 2px solid #e8e2d9;
+      border-radius: var(--radius-sm);
+      background: white;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--text-mid);
+      cursor: pointer;
+    }
+
+    .modal-btns .btn-save {
+      flex: 2;
+      padding: 16px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: var(--turquoise);
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      padding: 8px 16px calc(var(--safe-bottom) + 8px);
+      display: none;
+      justify-content: space-around;
+      box-shadow: 0 -2px 16px rgba(0,0,0,0.06);
+      z-index: 50;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .bottom-nav.show { display: flex; }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px 12px;
+      font-family: inherit;
+      transition: transform 0.2s;
+    }
+
+    .nav-item:active { transform: scale(0.9); }
+
+    .nav-item .nav-icon { font-size: 22px; }
+
+    .nav-item .nav-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-light);
+    }
+
+    .nav-item.active .nav-label { color: var(--coral); }
+
+    /* ===== LOADING ===== */
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+      gap: 20px;
+    }
+
+    .loading-spinner {
+      width: 48px;
+      height: 48px;
+      border: 4px solid #f0ece6;
+      border-top-color: var(--coral);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-mid);
+    }
+
+    .loading-subtext {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: -12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ===== WELCOME SCREEN ===== -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome-hero">
+      <span class="welcome-icon">&#9992;&#65039;</span>
+      <h1 class="welcome-title">Travel Companion</h1>
+      <p class="welcome-subtitle">Plan your perfect adventure together</p>
+    </div>
+    <div class="search-section">
+      <div class="search-box">
+        <span class="icon">&#128269;</span>
+        <input type="text" id="dest-search" placeholder="Where are you going?" autocomplete="off">
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+    <h2 class="section-title">Popular Destinations</h2>
+    <div class="popular-grid" id="popular-grid"></div>
+  </div>
+
+  <!-- ===== TRIP SETUP SCREEN ===== -->
+  <div class="screen" id="screen-setup">
+    <div class="setup-header">
+      <button class="back-btn" onclick="showScreen('welcome')">&#8592;</button>
+      <div class="setup-destination">Your destination</div>
+      <div class="setup-destination-name" id="setup-dest-name"></div>
+    </div>
+    <div class="setup-form">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" id="trip-date">
+      </div>
+      <div class="form-group">
+        <label>Number of Days</label>
+        <div class="days-selector">
+          <button class="days-btn" onclick="changeDays(-1)">&#8722;</button>
+          <div>
+            <div class="days-count" id="days-count">3</div>
+            <div class="days-label">days</div>
+          </div>
+          <button class="days-btn" onclick="changeDays(1)">&#43;</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Trip Style</label>
+        <select id="trip-style">
+          <option value="balanced">Balanced (Mix of everything)</option>
+          <option value="adventure">Adventure & Outdoors</option>
+          <option value="cultural">Cultural & Historical</option>
+          <option value="relaxed">Relaxed & Leisurely</option>
+          <option value="foodie">Foodie Experience</option>
+        </select>
+      </div>
+      <button class="btn-primary btn-generate" onclick="generateItinerary()">
+        &#10024; Generate Itinerary
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Crafting your itinerary...</div>
+      <div class="loading-subtext">Finding the best spots for you</div>
+    </div>
+  </div>
+
+  <!-- ===== ITINERARY SCREEN ===== -->
+  <div class="screen" id="screen-itinerary">
+    <div class="itinerary-header">
+      <div class="itinerary-header-top">
+        <button class="back-btn" onclick="showScreen('setup')">&#8592;</button>
+        <div class="header-actions">
+          <button class="action-btn" id="btn-edit" onclick="toggleEdit()" title="Edit">&#9998;</button>
+          <button class="action-btn" onclick="openRestaurants()" title="Restaurants">&#127860;</button>
+          <button class="action-btn" onclick="openShare()" title="Share">&#128228;</button>
+        </div>
+      </div>
+      <div class="itin-dest-name" id="itin-dest-name"></div>
+      <div class="itin-meta" id="itin-meta"></div>
+    </div>
+    <div class="edit-toolbar" id="edit-toolbar">
+      <button class="edit-toolbar-btn" onclick="openAddModal()">&#43; Add</button>
+      <button class="edit-toolbar-btn save" onclick="toggleEdit()">&#10003; Done</button>
+    </div>
+    <div class="day-tabs" id="day-tabs"></div>
+    <div class="timeline" id="timeline"></div>
+  </div>
+
+  <!-- ===== RESTAURANT SCREEN ===== -->
+  <div class="screen restaurant-screen" id="screen-restaurants">
+    <div class="setup-header">
+      <button class="back-btn" onclick="showScreen('itinerary')">&#8592;</button>
+      <div class="setup-destination">Restaurants near</div>
+      <div class="setup-destination-name" id="rest-dest-name"></div>
+    </div>
+    <div class="restaurant-search-bar">
+      <div class="search-box">
+        <span class="icon">&#128269;</span>
+        <input type="text" id="rest-search" placeholder="Search restaurants..." oninput="filterRestaurants()">
+      </div>
+    </div>
+    <div class="filter-chips" id="filter-chips"></div>
+    <div class="restaurant-list" id="restaurant-list"></div>
+  </div>
+
+  <!-- ===== ATTRACTION DETAIL SCREEN ===== -->
+  <div class="screen" id="screen-detail">
+    <div class="detail-hero" id="detail-hero">
+      <button class="back-btn" onclick="showScreen('itinerary')">&#8592;</button>
+      <span class="detail-emoji" id="detail-emoji"></span>
+      <div class="detail-name" id="detail-name"></div>
+      <span class="detail-type-badge" id="detail-type"></span>
+    </div>
+    <div class="detail-content" id="detail-content"></div>
+  </div>
+
+  <!-- ===== SHARE SCREEN ===== -->
+  <div class="screen" id="screen-share">
+    <div class="share-header">
+      <button class="back-btn" onclick="showScreen('itinerary')">&#8592;</button>
+      <div class="setup-destination">Share your trip to</div>
+      <div class="setup-destination-name" id="share-dest-name"></div>
+    </div>
+    <div class="share-preview" id="share-preview"></div>
+    <div class="share-actions">
+      <button class="share-btn native" onclick="shareNative()">
+        &#128228; Share via...
+      </button>
+      <button class="share-btn clipboard" onclick="copyToClipboard()">
+        &#128203; Copy to Clipboard
+      </button>
+      <button class="share-btn export" onclick="exportText()">
+        &#128196; Export as Text
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== ADD ITEM MODAL ===== -->
+  <div class="modal-overlay" id="add-modal">
+    <div class="modal-content">
+      <div class="modal-handle"></div>
+      <h3>Add to Itinerary</h3>
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" id="add-name" placeholder="e.g. Visit the Louvre">
+      </div>
+      <div class="form-group">
+        <label>Time</label>
+        <input type="time" id="add-time" value="12:00">
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="add-type">
+          <option value="attraction">Attraction</option>
+          <option value="food">Food & Dining</option>
+          <option value="activity">Activity</option>
+          <option value="transport">Transport</option>
+          <option value="rest">Rest & Relax</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="add-desc" placeholder="Add a short description..."></textarea>
+      </div>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+        <button class="btn-save" onclick="saveNewItem()">Add to Day</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Bottom Nav -->
+  <div class="bottom-nav" id="bottom-nav">
+    <button class="nav-item active" onclick="showScreen('itinerary')">
+      <span class="nav-icon">&#128197;</span>
+      <span class="nav-label">Itinerary</span>
+    </button>
+    <button class="nav-item" onclick="openRestaurants()">
+      <span class="nav-icon">&#127860;</span>
+      <span class="nav-label">Eat</span>
+    </button>
+    <button class="nav-item" onclick="openShare()">
+      <span class="nav-icon">&#128228;</span>
+      <span class="nav-label">Share</span>
+    </button>
+    <button class="nav-item" onclick="showScreen('welcome')">
+      <span class="nav-icon">&#127968;</span>
+      <span class="nav-label">Home</span>
+    </button>
+  </div>
+</div>
+
+<script>
+/* ===============================================
+   TRAVEL COMPANION APP - JavaScript
+   =============================================== */
+
+// ===== STATE =====
+let state = {
+  destination: null,
+  startDate: '',
+  days: 3,
+  style: 'balanced',
+  itinerary: [],
+  currentDay: 0,
+  editing: false
+};
+
+// ===== DESTINATION DATA =====
+const destinations = {
+  paris: {
+    name: 'Paris', country: 'France', emoji: '\uD83C\uDDEB\uD83C\uDDF7',
+    icon: '\uD83C\uDDEB\uD83C\uDDF7', tagline: 'City of Light',
+    gradient: 'linear-gradient(135deg, #FF6B6B, #ee5a24)',
+    attractions: [
+      { name: 'Eiffel Tower', emoji: '\uD83D\uDDFC', type: 'attraction', duration: '2-3 hours',
+        desc: 'The iconic iron lattice tower on the Champ de Mars.',
+        history: 'Built for the 1889 World\'s Fair by Gustave Eiffel, the tower was initially criticized by many of Paris\'s leading artists and intellectuals. Standing at 1,083 feet, it was the world\'s tallest man-made structure until the Chrysler Building was completed in 1930. Originally intended as a temporary installation, it was saved because of its usefulness as a radiotelegraph station. Today, it is the most-visited paid monument in the world, welcoming nearly 7 million visitors annually.',
+        tips: 'Book tickets online in advance to skip the long queues. Visit at sunset for the most magical experience, and stay to see the sparkle light show every hour on the hour after dark.' },
+      { name: 'Louvre Museum', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '3-4 hours',
+        desc: 'World\'s largest art museum and home to the Mona Lisa.',
+        history: 'Originally built as a fortress in the 12th century by King Philip II, the Louvre was transformed into a royal palace before becoming a public museum during the French Revolution in 1793. It houses over 380,000 objects and 35,000 works of art across 72,735 square meters. The famous glass pyramid entrance was designed by I.M. Pei and completed in 1989, initially causing controversy but now beloved as an iconic landmark.',
+        tips: 'Enter through the Carrousel du Louvre entrance to avoid crowds. Wednesday and Friday evenings have extended hours with fewer visitors.' },
+      { name: 'Montmartre & Sacr\u00e9-C\u0153ur', emoji: '\u26EA', type: 'attraction', duration: '2-3 hours',
+        desc: 'Historic hilltop neighborhood with stunning basilica views.',
+        history: 'Montmartre was once a village outside Paris, known for its bohemian lifestyle and as a gathering place for artists including Monet, Renoir, and Picasso. The Sacr\u00e9-C\u0153ur Basilica was built between 1875 and 1914 as a symbol of national penance after the Franco-Prussian War. Its Romano-Byzantine architecture and brilliant white travertine stone make it one of Paris\'s most recognizable landmarks.',
+        tips: 'Take the funicular up to avoid the steep stairs. Visit the Place du Tertre to see artists at work, and explore the charming side streets.' },
+      { name: 'Seine River Cruise', emoji: '\uD83D\uDEA2', type: 'activity', duration: '1-1.5 hours',
+        desc: 'Scenic boat tour past Paris\'s most famous landmarks.',
+        history: 'The Seine has been the lifeline of Paris for over 2,000 years, serving as a vital trade route since the days when the Parisii tribe first settled on \u00CEle de la Cit\u00E9. The river stretches 485 miles and passes through the heart of Paris, with 37 bridges crossing it within city limits.',
+        tips: 'The Bateaux Mouches evening cruises offer dinner with spectacular views of illuminated monuments.' },
+      { name: 'Notre-Dame Cathedral', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '1-2 hours',
+        desc: 'Medieval Gothic cathedral undergoing restoration.',
+        history: 'Construction began in 1163 under Bishop Maurice de Sully and was largely completed by 1260. It is considered one of the finest examples of French Gothic architecture. The cathedral survived the French Revolution, was the setting for Napoleon\'s coronation in 1804, and inspired Victor Hugo\'s famous novel. After the devastating fire of April 2019, a massive restoration project has been underway.',
+        tips: 'While interior access may be limited during restoration, the exterior and surrounding area remain beautiful to explore.' },
+      { name: 'Mus\u00e9e d\'Orsay', emoji: '\uD83C\uDFA8', type: 'attraction', duration: '2-3 hours',
+        desc: 'Impressionist & post-impressionist art in a stunning former railway station.',
+        history: 'Housed in the former Gare d\'Orsay, a Beaux-Arts railway station built for the 1900 World Fair. The station was scheduled for demolition before being saved and converted into a museum, opening in 1986. It holds the world\'s largest collection of Impressionist and Post-Impressionist masterpieces by artists like Monet, Renoir, Degas, and Van Gogh.',
+        tips: 'Visit on Thursday evenings when the museum is open late and less crowded. Don\'t miss the clock windows for great views.' }
+    ],
+    restaurants: [
+      { name: 'Le Petit Cler', emoji: '\uD83E\uDD50', cuisine: 'French Bistro', rating: 4.6, price: '$$', tags: ['Cozy', 'Local Favorite'], desc: 'Charming neighborhood bistro with classic French fare' },
+      { name: 'Caf\u00e9 de Flore', emoji: '\u2615', cuisine: 'French Caf\u00e9', rating: 4.3, price: '$$$', tags: ['Historic', 'Iconic'], desc: 'Legendary Left Bank caf\u00e9 frequented by Sartre and de Beauvoir' },
+      { name: 'L\'As du Fallafel', emoji: '\uD83E\uDD59', cuisine: 'Middle Eastern', rating: 4.7, price: '$', tags: ['Best Falafel', 'Quick Bite'], desc: 'Famous Marais falafel spot with long but fast-moving lines' },
+      { name: 'Pink Mamma', emoji: '\uD83C\uDF55', cuisine: 'Italian', rating: 4.5, price: '$$', tags: ['Trendy', 'Instagram-worthy'], desc: 'Four-story Italian restaurant with incredible atmosphere' },
+      { name: 'Breizh Caf\u00e9', emoji: '\uD83E\uDDC7', cuisine: 'Cr\u00eaperie', rating: 4.5, price: '$$', tags: ['Cr\u00eapes', 'Artisan'], desc: 'Best buckwheat galettes and sweet cr\u00eapes in the Marais' },
+      { name: 'Le Bouillon Chartier', emoji: '\uD83C\uDF72', cuisine: 'French Traditional', rating: 4.4, price: '$', tags: ['Historic', 'Budget-friendly'], desc: 'Belle \u00c9poque dining hall serving classic French dishes since 1896' }
+    ]
+  },
+  tokyo: {
+    name: 'Tokyo', country: 'Japan', emoji: '\uD83C\uDDEF\uD83C\uDDF5',
+    icon: '\uD83C\uDDEF\uD83C\uDDF5', tagline: 'Where tradition meets future',
+    gradient: 'linear-gradient(135deg, #4ECDC4, #2eaf8f)',
+    attractions: [
+      { name: 'Senso-ji Temple', emoji: '\u26E9\uFE0F', type: 'attraction', duration: '1-2 hours',
+        desc: 'Tokyo\'s oldest and most significant Buddhist temple.',
+        history: 'Founded in 645 AD, Senso-ji is Tokyo\'s oldest temple. Legend says two fishermen found a statue of Kannon, the goddess of mercy, in the Sumida River. The temple was built to enshrine it. Despite being destroyed during WWII air raids, it was rebuilt and remains a powerful symbol of resilience and rebirth for the people of Tokyo.',
+        tips: 'Visit early morning (before 8 AM) to avoid crowds. The Nakamise shopping street leading to the temple has traditional snacks and souvenirs.' },
+      { name: 'Shibuya Crossing', emoji: '\uD83D\uDEB6', type: 'attraction', duration: '30 mins',
+        desc: 'The world\'s busiest pedestrian crossing.',
+        history: 'Shibuya Crossing became the iconic scramble intersection it is today through Tokyo\'s rapid post-war urban development. Up to 3,000 people cross at each light change during peak times, making it a symbol of Tokyo\'s organized energy. The surrounding area has been a youth culture hub since the 1970s.',
+        tips: 'Watch from the Starbucks above for an aerial view, or stand in the middle during the crossing for the full experience.' },
+      { name: 'Meiji Shrine', emoji: '\u26E9\uFE0F', type: 'attraction', duration: '1-2 hours',
+        desc: 'Serene Shinto shrine surrounded by an ancient forest.',
+        history: 'Dedicated to Emperor Meiji and Empress Shoken, the shrine was completed in 1920. The surrounding forest of 120,000 trees was planted by over 100,000 volunteers from across Japan. Destroyed during WWII, it was rebuilt in 1958. The shrine stands as a peaceful oasis in bustling Tokyo, embodying the harmony between nature and spirituality.',
+        tips: 'Write a wish on an ema (wooden plaque) and hang it at the shrine. Check if there\'s a traditional wedding ceremony happening.' },
+      { name: 'Tsukiji Outer Market', emoji: '\uD83C\uDF63', type: 'food', duration: '2 hours',
+        desc: 'Fresh seafood, street food, and culinary treasures.',
+        history: 'While the inner wholesale market moved to Toyosu in 2018, the outer market remains a vibrant food destination with over 400 shops and restaurants. The area has been associated with food commerce since 1935 and continues to be a paradise for food lovers seeking the freshest sushi, tamagoyaki, and seasonal specialties.',
+        tips: 'Go hungry! Try the fresh sushi, tamagoyaki (Japanese omelette), and seasonal fruits. Most popular stalls open at 5 AM.' },
+      { name: 'TeamLab Borderless', emoji: '\uD83C\uDF0C', type: 'activity', duration: '2-3 hours',
+        desc: 'Immersive digital art museum that defies boundaries.',
+        history: 'Created by the art collective teamLab, this museum opened in 2018 and quickly became one of the world\'s most popular single-artist museums. The installations use projection mapping and interactive technology to create art that moves, flows, and responds to visitors.',
+        tips: 'Wear light-colored clothing to become part of the art. Book tickets well in advance as they sell out quickly.' },
+      { name: 'Akihabara', emoji: '\uD83C\uDFAE', type: 'attraction', duration: '2-3 hours',
+        desc: 'Electric Town \u2014 anime, manga, and gaming paradise.',
+        history: 'After WWII, Akihabara became a black market for electronic goods, evolving into a major shopping district for electronics. In the 2000s, it transformed into the center of otaku (anime/manga fan) culture. Today it\'s a neon-lit wonderland of multi-story electronics stores, anime shops, maid cafes, and arcades.',
+        tips: 'Visit a multi-story arcade and try crane games. Check out a themed caf\u00e9 for a unique experience.' }
+    ],
+    restaurants: [
+      { name: 'Ichiran Ramen', emoji: '\uD83C\uDF5C', cuisine: 'Ramen', rating: 4.6, price: '$', tags: ['Solo Booths', 'Iconic'], desc: 'Famous tonkotsu ramen in individual focus booths' },
+      { name: 'Sushi Dai', emoji: '\uD83C\uDF63', cuisine: 'Sushi', rating: 4.8, price: '$$$', tags: ['Fresh', 'Worth the Wait'], desc: 'Legendary omakase sushi near the fish market' },
+      { name: 'Afuri', emoji: '\uD83C\uDF5C', cuisine: 'Ramen', rating: 4.5, price: '$', tags: ['Yuzu', 'Light'], desc: 'Light and refreshing yuzu shio ramen' },
+      { name: 'Tonkatsu Maisen', emoji: '\uD83C\uDF56', cuisine: 'Japanese', rating: 4.6, price: '$$', tags: ['Crispy', 'Heritage Pork'], desc: 'Premium tonkatsu in a converted bathhouse' },
+      { name: 'Gyukatsu Motomura', emoji: '\uD83E\uDD69', cuisine: 'Japanese', rating: 4.7, price: '$$', tags: ['Unique', 'Beef Cutlet'], desc: 'Rare beef cutlet you grill to your preferred doneness' },
+      { name: 'Sakura Tempura', emoji: '\uD83C\uDF64', cuisine: 'Tempura', rating: 4.4, price: '$$', tags: ['Traditional', 'Light'], desc: 'Delicate, perfectly fried seasonal tempura' }
+    ]
+  },
+  rome: {
+    name: 'Rome', country: 'Italy', emoji: '\uD83C\uDDEE\uD83C\uDDF9',
+    icon: '\uD83C\uDDEE\uD83C\uDDF9', tagline: 'The Eternal City',
+    gradient: 'linear-gradient(135deg, #A78BFA, #7c5cbf)',
+    attractions: [
+      { name: 'Colosseum', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '2-3 hours',
+        desc: 'Ancient amphitheater and icon of Imperial Rome.',
+        history: 'Completed in 80 AD under Emperor Titus, the Colosseum could hold between 50,000 and 80,000 spectators. It hosted gladiatorial contests, animal hunts, and public spectacles for nearly 500 years. The largest amphitheater ever built, it\'s an engineering marvel with its complex system of vaults and arches. Earthquakes and stone-robbers damaged it over centuries, but it remains one of the most recognizable symbols of Western civilization.',
+        tips: 'Buy a combined ticket that includes the Roman Forum and Palatine Hill. Consider an underground tour for access to the hypogeum where gladiators waited.' },
+      { name: 'Vatican Museums & Sistine Chapel', emoji: '\u26EA', type: 'attraction', duration: '3-4 hours',
+        desc: 'Vast art collection culminating in Michelangelo\'s masterpiece ceiling.',
+        history: 'The Vatican Museums were founded by Pope Julius II in the early 16th century and contain some of humanity\'s greatest artistic treasures. The Sistine Chapel ceiling, painted by Michelangelo between 1508 and 1512, depicts nine scenes from the Book of Genesis. Michelangelo initially resisted the commission, considering himself a sculptor, not a painter.',
+        tips: 'Book skip-the-line tickets well in advance. Friday evenings offer a special night opening with fewer crowds and a beautiful atmosphere.' },
+      { name: 'Trevi Fountain', emoji: '\u26F2', type: 'attraction', duration: '30-45 mins',
+        desc: 'Baroque masterpiece and Rome\'s most famous fountain.',
+        history: 'Designed by Nicola Salvi and completed in 1762, the Trevi Fountain marks the terminal point of the ancient Aqua Virgo aqueduct. The central figure of Neptune riding a chariot drawn by seahorses represents the sea. Legend has it that tossing a coin ensures your return to Rome \u2014 about \u20AC3,000 is thrown in daily, collected and donated to charity.',
+        tips: 'Visit very early morning or late at night for the most atmospheric (and least crowded) experience. Toss a coin with your right hand over your left shoulder!' },
+      { name: 'Roman Forum', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '2 hours',
+        desc: 'Ancient ruins of the center of Roman public life.',
+        history: 'For centuries, the Roman Forum was the center of public life: the site of triumphal processions, elections, public speeches, criminal trials, and commercial affairs. Originally a marshy burial ground, it was drained in the 7th century BC and developed into the political, religious, and social heart of the Roman Republic and Empire.',
+        tips: 'Bring water and sun protection \u2014 there\'s very little shade. A guided tour really brings the ruins to life.' },
+      { name: 'Trastevere Neighborhood', emoji: '\uD83C\uDFD8\uFE0F', type: 'activity', duration: '2-3 hours',
+        desc: 'Charming cobblestone streets with authentic Roman character.',
+        history: 'Trastevere (meaning "across the Tiber") has been inhabited since ancient Roman times and was historically a working-class neighborhood. Its narrow medieval streets, ivy-covered buildings, and vibrant piazzas make it one of Rome\'s most photogenic and atmospheric areas. Today it\'s known for its lively nightlife, excellent trattorias, and bohemian spirit.',
+        tips: 'Get lost in the side streets \u2014 the best discoveries happen when you wander. Evening is the most magical time to visit.' },
+      { name: 'Pantheon', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '1 hour',
+        desc: 'Best-preserved ancient Roman building with iconic dome.',
+        history: 'Originally built by Marcus Agrippa around 27 BC and completely rebuilt by Emperor Hadrian around 126 AD, the Pantheon\'s dome remains the world\'s largest unreinforced concrete dome. The oculus at the top is 27 feet in diameter and is the only source of natural light. It has been in continuous use throughout history and was converted to a Christian church in 609 AD.',
+        tips: 'Free entry! Visit when it rains to see water fall through the oculus \u2014 there are drain holes in the floor.' }
+    ],
+    restaurants: [
+      { name: 'Da Enzo al 29', emoji: '\uD83C\uDF5D', cuisine: 'Roman', rating: 4.7, price: '$$', tags: ['Trastevere', 'Traditional'], desc: 'Authentic Roman cuisine \u2014 legendary cacio e pepe' },
+      { name: 'Pizzeria Da Remo', emoji: '\uD83C\uDF55', cuisine: 'Pizza', rating: 4.5, price: '$', tags: ['Thin Crust', 'Local Spot'], desc: 'Thin, crispy Roman-style pizza loved by locals' },
+      { name: 'Armando al Pantheon', emoji: '\uD83C\uDF72', cuisine: 'Roman', rating: 4.6, price: '$$$', tags: ['Near Pantheon', 'Family-run'], desc: 'Family-run trattoria near the Pantheon since 1961' },
+      { name: 'Supplizio', emoji: '\uD83E\uDDC0', cuisine: 'Street Food', rating: 4.4, price: '$', tags: ['Suppl\u00ec', 'Quick Bite'], desc: 'Gourmet suppl\u00ec (fried rice balls) in creative flavors' },
+      { name: 'Gelateria del Teatro', emoji: '\uD83C\uDF66', cuisine: 'Gelato', rating: 4.8, price: '$', tags: ['Artisan', 'Must-Visit'], desc: 'Artisan gelato made fresh daily with seasonal ingredients' },
+      { name: 'Roscioli Salumeria', emoji: '\uD83E\uDDC0', cuisine: 'Italian Deli', rating: 4.7, price: '$$$', tags: ['Wine Bar', 'Charcuterie'], desc: 'World-class cheese, meats, and wine in a historic deli' }
+    ]
+  },
+  barcelona: {
+    name: 'Barcelona', country: 'Spain', emoji: '\uD83C\uDDEA\uD83C\uDDF8',
+    icon: '\uD83C\uDDEA\uD83C\uDDF8', tagline: 'Gaud\u00ed\'s Masterpiece',
+    gradient: 'linear-gradient(135deg, #F7AE5D, #e8913a)',
+    attractions: [
+      { name: 'Sagrada Fam\u00edlia', emoji: '\u26EA', type: 'attraction', duration: '2-3 hours',
+        desc: 'Gaud\u00ed\'s unfinished masterpiece basilica.',
+        history: 'Construction began in 1882, with Gaud\u00ed taking over the project in 1883 and dedicating the last 15 years of his life exclusively to it. He knew he would not live to see it completed, saying "My client is not in a hurry." The basilica combines Gothic and Art Nouveau styles with nature-inspired forms. It was consecrated in 2010 and is expected to be completed by 2026, the centenary of Gaud\u00ed\'s death.',
+        tips: 'Book tickets months in advance. The Nativity Facade tower has the best views but requires climbing narrow stairs.' },
+      { name: 'Park G\u00fcell', emoji: '\uD83C\uDFDE\uFE0F', type: 'attraction', duration: '1.5-2 hours',
+        desc: 'Whimsical public park with colorful mosaic works.',
+        history: 'Designed by Gaud\u00ed between 1900 and 1914, Park G\u00fcell was originally planned as a garden city for wealthy families. Only two houses were built before the project was abandoned. The park became public in 1926 and was declared a UNESCO World Heritage Site in 1984. Its mosaic salamander ("El Drac") has become a symbol of Barcelona.',
+        tips: 'The monumental zone requires timed entry tickets. Go early morning for the best light and fewer crowds.' },
+      { name: 'La Boqueria Market', emoji: '\uD83C\uDF53', type: 'food', duration: '1-2 hours',
+        desc: 'Vibrant food market on La Rambla since 1217.',
+        history: 'La Boqueria\'s origins date back to 1217, when tables were set up near a city gate to sell meat. It evolved into a permanent market and moved to its current location in 1840. The modernist iron structure was added in 1914. Today it\'s one of Europe\'s best food markets, with over 300 stalls selling everything from Ib\u00e9rico ham to fresh tropical juices.',
+        tips: 'Avoid the stalls right at the entrance (tourist prices). Head deeper inside for better quality and prices. Try the fresh fruit smoothies!' },
+      { name: 'Gothic Quarter', emoji: '\uD83C\uDFD8\uFE0F', type: 'attraction', duration: '2-3 hours',
+        desc: 'Medieval streets and hidden plazas in the old city.',
+        history: 'The Barri G\u00f2tic is the center of the old city of Barcelona. Its narrow labyrinthine streets feature remnants of Roman walls, medieval palaces, and Gothic churches. The Barcelona Cathedral, built between the 13th and 15th centuries, anchors the quarter. Many buildings were actually renovated in the early 20th century in Neo-Gothic style for the 1929 International Exhibition.',
+        tips: 'Get happily lost in the narrow streets. Look for the Bridge of Sighs (Pont del Bisbe) and the hidden Roman temple.' },
+      { name: 'Casa Batll\u00f3', emoji: '\uD83C\uDFE0', type: 'attraction', duration: '1-1.5 hours',
+        desc: 'Gaud\u00ed\'s fantastical house with dragon-like roof.',
+        history: 'Redesigned by Gaud\u00ed in 1904-1906, Casa Batll\u00f3 represents one of his most creative works. The facade resembles a lake surface with water lilies, while the roof is said to represent Saint George and the dragon. The building uses no straight lines, as Gaud\u00ed believed "there are no straight lines in nature." It\'s been a UNESCO World Heritage Site since 2005.',
+        tips: 'The evening experience with augmented reality is unique. The rooftop at sunset is unforgettable.' },
+      { name: 'Barceloneta Beach', emoji: '\uD83C\uDFD6\uFE0F', type: 'activity', duration: '2-3 hours',
+        desc: 'Lively Mediterranean beach with great seafood nearby.',
+        history: 'Barceloneta was a fishing neighborhood built in the 18th century. The beach was transformed for the 1992 Olympics, turning an industrial waterfront into one of the best urban beaches in Europe. The neighborhood retains its maritime character with narrow streets and traditional seafood restaurants.',
+        tips: 'Walk along the boardwalk for great views. Watch your belongings on the beach. The chiringuitos (beach bars) are great for a cold drink.' }
+    ],
+    restaurants: [
+      { name: 'Cal Pep', emoji: '\uD83E\uDD90', cuisine: 'Seafood Tapas', rating: 4.6, price: '$$$', tags: ['Counter Dining', 'Legendary'], desc: 'Famous tapas bar with incredible fresh seafood' },
+      { name: 'La Pepita', emoji: '\uD83C\uDF2E', cuisine: 'Tapas', rating: 4.5, price: '$$', tags: ['Creative', 'Gr\u00e0cia'], desc: 'Creative modern tapas in the bohemian Gr\u00e0cia neighborhood' },
+      { name: 'Can Paixano', emoji: '\uD83C\uDF7E', cuisine: 'Spanish', rating: 4.3, price: '$', tags: ['Cava Bar', 'Standing Room'], desc: 'Bustling cava bar with amazing bocadillos since 1969' },
+      { name: 'Bar Mut', emoji: '\uD83C\uDF77', cuisine: 'Mediterranean', rating: 4.5, price: '$$$', tags: ['Wine Bar', 'Upscale Tapas'], desc: 'Sophisticated tapas and excellent wine list in Eixample' },
+      { name: 'Flax & Kale', emoji: '\uD83E\uDD57', cuisine: 'Healthy', rating: 4.4, price: '$$', tags: ['Flexitarian', 'Brunch'], desc: 'Trendy flexitarian restaurant with amazing brunch options' },
+      { name: 'Churreria Laietana', emoji: '\uD83E\uDD64', cuisine: 'Dessert', rating: 4.6, price: '$', tags: ['Churros', 'Classic'], desc: 'Traditional churros with thick hot chocolate' }
+    ]
+  },
+  bali: {
+    name: 'Bali', country: 'Indonesia', emoji: '\uD83C\uDDEE\uD83C\uDDE9',
+    icon: '\uD83C\uDDEE\uD83C\uDDE9', tagline: 'Island of the Gods',
+    gradient: 'linear-gradient(135deg, #F472B6, #d946a8)',
+    attractions: [
+      { name: 'Tanah Lot Temple', emoji: '\u26E9\uFE0F', type: 'attraction', duration: '2 hours',
+        desc: 'Iconic sea temple perched on a rocky outcrop.',
+        history: 'One of Bali\'s most important sea temples, Tanah Lot was built in the 16th century by the priest Nirartha, who traveled along the southern coast and chose this beautiful rock formation for a temple. Local legend says the temple is guarded by sea snakes. The temple is central to Balinese mythology and is one of seven sea temples forming a chain along the coast.',
+        tips: 'Visit at sunset for the most spectacular views. Low tide allows you to walk to the base of the temple rock.' },
+      { name: 'Tegallalang Rice Terraces', emoji: '\uD83C\uDF3E', type: 'attraction', duration: '1.5-2 hours',
+        desc: 'Stunning terraced rice paddies carved into the hillside.',
+        history: 'These rice terraces showcase the traditional Balinese cooperative irrigation system called "subak," which dates back to the 9th century and is a UNESCO World Heritage cultural practice. The subak system reflects the philosophical concept of Tri Hita Karana, which brings together the realms of spirit, human world, and nature.',
+        tips: 'Go early morning before tour buses arrive. Wear comfortable shoes \u2014 the paths can be steep and slippery. A small donation is expected when walking through.' },
+      { name: 'Ubud Monkey Forest', emoji: '\uD83D\uDC12', type: 'attraction', duration: '1-2 hours',
+        desc: 'Sacred sanctuary home to over 700 Balinese long-tailed macaques.',
+        history: 'The Sacred Monkey Forest Sanctuary in Ubud has been an important spiritual, economic, and conservation center since the 14th century. It encompasses three holy temples and serves as a natural habitat for the Balinese long-tailed monkey. The forest plays a key role in Balinese Hinduism and ecological conservation.',
+        tips: 'Don\'t bring food or shiny objects \u2014 the monkeys will grab them! Keep a safe distance and don\'t make direct eye contact.' },
+      { name: 'Uluwatu Temple', emoji: '\u26E9\uFE0F', type: 'attraction', duration: '2-3 hours',
+        desc: 'Clifftop temple with traditional Kecak fire dance at sunset.',
+        history: 'Pura Luhur Uluwatu sits on a 70-meter cliff on the southwestern tip of Bali. Built in the 11th century, it is one of six key temples considered Bali\'s spiritual pillars. The Kecak dance performed at sunset tells the story of the Ramayana, with a chorus of 50 or more men providing the dramatic chanting soundtrack.',
+        tips: 'Arrive early to get good seats for the Kecak dance (starts at 6 PM). Watch out for mischievous monkeys near the entrance!' },
+      { name: 'Tirta Empul Temple', emoji: '\uD83D\uDCA7', type: 'attraction', duration: '1.5 hours',
+        desc: 'Sacred water temple for spiritual purification rituals.',
+        history: 'Founded in 926 AD, Tirta Empul is built around a natural spring considered holy by Balinese Hindus. The temple\'s purification pools have been used for over a thousand years. Visitors and worshippers move through 13 fountains, each with specific spiritual significance, in a melukat (purification) ceremony.',
+        tips: 'You can participate in the purification ritual \u2014 bring a sarong and sash (or rent at the entrance). Follow the local guide\'s instructions respectfully.' },
+      { name: 'Mount Batur Sunrise Trek', emoji: '\uD83C\uDF04', type: 'activity', duration: '4-5 hours',
+        desc: 'Spectacular sunrise hike up an active volcano.',
+        history: 'Mount Batur is an active volcano that last erupted in 2000. Standing at 1,717 meters, it sits within a massive caldera alongside Lake Batur. The mountain is considered sacred in Balinese Hinduism as the abode of the gods. The pre-dawn trek rewards hikers with one of the most breathtaking sunrises in Southeast Asia.',
+        tips: 'Start around 3:30 AM to reach the summit by sunrise. Bring warm layers \u2014 it\'s cold at the top! A local guide is required.' }
+    ],
+    restaurants: [
+      { name: 'Locavore', emoji: '\uD83C\uDF3F', cuisine: 'Modern Indonesian', rating: 4.8, price: '$$$', tags: ['Fine Dining', 'Local Ingredients'], desc: 'Award-winning restaurant using 95% locally sourced ingredients' },
+      { name: 'Warung Babi Guling Ibu Oka', emoji: '\uD83C\uDF56', cuisine: 'Balinese', rating: 4.5, price: '$', tags: ['Suckling Pig', 'Iconic'], desc: 'Famous for Bali\'s best babi guling (suckling pig)' },
+      { name: 'Nook', emoji: '\uD83C\uDF3E', cuisine: 'Indonesian', rating: 4.4, price: '$', tags: ['Rice Paddy Views', 'Chill'], desc: 'Casual spot with stunning rice paddy views and local food' },
+      { name: 'La Laguna', emoji: '\uD83C\uDF0A', cuisine: 'Mediterranean', rating: 4.3, price: '$$', tags: ['Bohemian', 'Beach'], desc: 'Bohemian beachfront dining with gypsy caravans and fairy lights' },
+      { name: 'Milk & Madu', emoji: '\u2615', cuisine: 'Caf\u00e9', rating: 4.5, price: '$$', tags: ['Brunch', 'Healthy'], desc: 'Charming Canggu caf\u00e9 with amazing smoothie bowls and brunch' },
+      { name: 'Mama San', emoji: '\uD83C\uDF5C', cuisine: 'Asian Fusion', rating: 4.6, price: '$$$', tags: ['Cocktails', 'Upscale'], desc: 'Colonial-chic restaurant with pan-Asian tapas and creative cocktails' }
+    ]
+  },
+  nyc: {
+    name: 'New York City', country: 'United States', emoji: '\uD83C\uDDFA\uD83C\uDDF8',
+    icon: '\uD83C\uDDFA\uD83C\uDDF8', tagline: 'The City That Never Sleeps',
+    gradient: 'linear-gradient(135deg, #60A5FA, #3b82f6)',
+    attractions: [
+      { name: 'Statue of Liberty', emoji: '\uD83D\uDDFD', type: 'attraction', duration: '3-4 hours',
+        desc: 'Iconic symbol of freedom and democracy.',
+        history: 'A gift from France to the United States, the Statue of Liberty was dedicated on October 28, 1886. Designed by Fr\u00e9d\u00e9ric Auguste Bartholdi with a metal framework built by Gustave Eiffel, Lady Liberty stands 305 feet tall from ground to torch tip. She has welcomed millions of immigrants arriving by sea and remains one of the most universal symbols of freedom and democracy.',
+        tips: 'Book pedestal or crown access tickets well in advance \u2014 they sell out weeks ahead. Take the first ferry of the day to beat crowds.' },
+      { name: 'Central Park', emoji: '\uD83C\uDF33', type: 'attraction', duration: '2-3 hours',
+        desc: '843-acre urban oasis in the heart of Manhattan.',
+        history: 'Designed by Frederick Law Olmsted and Calvert Vaux, Central Park opened in 1858 and was the first major landscaped public park in the United States. Over 10 million cubic yards of soil were moved during construction, and 270,000 trees and shrubs were planted. The park receives approximately 42 million visitors per year, making it the most visited urban park in the United States.',
+        tips: 'Rent bikes to cover more ground. Don\'t miss Bethesda Fountain, Bow Bridge, and the Belvedere Castle viewpoint.' },
+      { name: 'Metropolitan Museum of Art', emoji: '\uD83C\uDFDB\uFE0F', type: 'attraction', duration: '3-4 hours',
+        desc: 'One of the world\'s largest and finest art museums.',
+        history: 'The Met was founded in 1870 by a group of American citizens who wanted to create a world-class art institution. It opened in its current location in 1880 and has expanded to cover over 2 million square feet. Its collection spans 5,000 years of world culture, with over 2 million works ranging from ancient Egyptian artifacts to contemporary American art.',
+        tips: 'The rooftop garden bar (seasonal) offers stunning Central Park and skyline views. The suggested admission price means you can pay what you wish as a NY resident.' },
+      { name: 'Brooklyn Bridge', emoji: '\uD83C\uDF09', type: 'attraction', duration: '1-1.5 hours',
+        desc: 'Historic suspension bridge with spectacular city views.',
+        history: 'Completed in 1883, the Brooklyn Bridge was the first steel-wire suspension bridge and the longest suspension bridge in the world at the time. Designed by John Augustus Roebling (who died before construction began) and completed by his son Washington and daughter-in-law Emily, the bridge took 14 years to build and cost the lives of at least 20 workers.',
+        tips: 'Walk from Brooklyn to Manhattan for the best skyline views. Sunset walks are magical. Combine with a visit to DUMBO and Brooklyn Bridge Park.' },
+      { name: 'Times Square & Broadway', emoji: '\uD83C\uDFAD', type: 'activity', duration: '2-3 hours',
+        desc: 'The bright lights of Broadway and the crossroads of the world.',
+        history: 'Times Square was originally called Longacre Square until 1904 when The New York Times moved its headquarters there. The area became the center of the theater district in the early 1900s and evolved into the iconic neon-lit spectacle it is today. Broadway theater has been a cultural institution since the 1700s, with the theater district now hosting about 40 professional theaters.',
+        tips: 'Book Broadway tickets through the TKTS booth in Times Square for same-day discounted shows. Visit at night when the lights are most spectacular.' },
+      { name: 'High Line', emoji: '\uD83D\uDEE4\uFE0F', type: 'attraction', duration: '1-2 hours',
+        desc: 'Elevated park built on a historic freight rail line.',
+        history: 'The High Line was built on a section of the former New York Central Railroad\'s West Side Line, which was used from 1934 to 1980. After years of abandonment and threatened demolition, neighborhood residents founded Friends of the High Line in 1999 to advocate for its preservation. It was redesigned as a 1.45-mile elevated greenway and opened in stages between 2009 and 2014.',
+        tips: 'Enter at the Gansevoort Street entrance and walk north. Stop at the viewing platforms for great city views. Combine with Chelsea Market for food.' }
+    ],
+    restaurants: [
+      { name: 'Joe\'s Pizza', emoji: '\uD83C\uDF55', cuisine: 'Pizza', rating: 4.5, price: '$', tags: ['NYC Classic', 'Quick Bite'], desc: 'Iconic Greenwich Village pizza since 1975' },
+      { name: 'Katz\'s Delicatessen', emoji: '\uD83E\uDD6A', cuisine: 'Deli', rating: 4.5, price: '$$', tags: ['Historic', 'Pastrami'], desc: 'Legendary Lower East Side deli since 1888' },
+      { name: 'Los Tacos No. 1', emoji: '\uD83C\uDF2E', cuisine: 'Mexican', rating: 4.6, price: '$', tags: ['Chelsea Market', 'Authentic'], desc: 'Incredible authentic Mexican tacos in Chelsea Market' },
+      { name: 'Peter Luger Steak House', emoji: '\uD83E\uDD69', cuisine: 'Steakhouse', rating: 4.4, price: '$$$$', tags: ['Brooklyn', 'Legendary'], desc: 'Brooklyn\'s legendary steakhouse since 1887' },
+      { name: 'Xi\'an Famous Foods', emoji: '\uD83C\uDF5C', cuisine: 'Chinese', rating: 4.5, price: '$', tags: ['Hand-Pulled Noodles', 'Spicy'], desc: 'Hand-pulled noodles and spicy cumin lamb burgers' },
+      { name: 'Levain Bakery', emoji: '\uD83C\uDF6A', cuisine: 'Bakery', rating: 4.7, price: '$', tags: ['Cookies', 'Must-Try'], desc: 'Famous oversized, gooey chocolate chip walnut cookies' }
+    ]
+  }
+};
+
+// ===== ITINERARY TEMPLATES =====
+function generateDayPlan(dest, dayNum, totalDays, style) {
+  const d = destinations[dest];
+  if (!d) return [];
+
+  const attractions = [...d.attractions];
+  const items = [];
+  const dayIndex = (dayNum - 1) % attractions.length;
+
+  // Morning
+  const morning = attractions[(dayIndex * 2) % attractions.length];
+  items.push({
+    time: '09:00',
+    name: morning.name,
+    emoji: morning.emoji,
+    type: morning.type,
+    desc: morning.desc,
+    duration: morning.duration,
+    attractionKey: (dayIndex * 2) % attractions.length
+  });
+
+  // Lunch
+  const lunchIdx = (dayNum - 1) % d.restaurants.length;
+  const lunch = d.restaurants[lunchIdx];
+  items.push({
+    time: '12:00',
+    name: lunch.name,
+    emoji: lunch.emoji,
+    type: 'food',
+    desc: lunch.desc,
+    duration: '1-1.5 hours',
+    attractionKey: null
+  });
+
+  // Afternoon
+  const afternoon = attractions[(dayIndex * 2 + 1) % attractions.length];
+  items.push({
+    time: '14:00',
+    name: afternoon.name,
+    emoji: afternoon.emoji,
+    type: afternoon.type,
+    desc: afternoon.desc,
+    duration: afternoon.duration,
+    attractionKey: (dayIndex * 2 + 1) % attractions.length
+  });
+
+  // Late afternoon activity or rest
+  if (style === 'relaxed') {
+    items.push({
+      time: '16:30',
+      name: 'Free Time & Relax',
+      emoji: '\u2615',
+      type: 'rest',
+      desc: 'Take a break, explore at your own pace, or relax at a caf\u00e9.',
+      duration: '1.5 hours',
+      attractionKey: null
+    });
+  } else {
+    const lateAfternoon = attractions[(dayIndex * 2 + 2) % attractions.length];
+    items.push({
+      time: '16:30',
+      name: lateAfternoon.name,
+      emoji: lateAfternoon.emoji,
+      type: lateAfternoon.type,
+      desc: lateAfternoon.desc,
+      duration: '1-1.5 hours',
+      attractionKey: (dayIndex * 2 + 2) % attractions.length
+    });
+  }
+
+  // Dinner
+  const dinnerIdx = (dayNum) % d.restaurants.length;
+  const dinner = d.restaurants[dinnerIdx];
+  items.push({
+    time: '19:00',
+    name: dinner.name,
+    emoji: dinner.emoji,
+    type: 'food',
+    desc: dinner.desc,
+    duration: '1.5-2 hours',
+    attractionKey: null
+  });
+
+  return items;
+}
+
+
+// ===== SCREEN MANAGEMENT =====
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+
+  const nav = document.getElementById('bottom-nav');
+  const showNav = ['itinerary', 'restaurants', 'share'].includes(screenId);
+  nav.classList.toggle('show', showNav);
+
+  // Update nav active state
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (screenId === 'itinerary') document.querySelectorAll('.nav-item')[0].classList.add('active');
+  if (screenId === 'restaurants') document.querySelectorAll('.nav-item')[1].classList.add('active');
+  if (screenId === 'share') document.querySelectorAll('.nav-item')[2].classList.add('active');
+}
+
+
+// ===== WELCOME SCREEN =====
+function initWelcome() {
+  const grid = document.getElementById('popular-grid');
+  const entries = Object.entries(destinations);
+  grid.innerHTML = entries.map(([key, d]) => `
+    <div class="popular-card" onclick="selectDestination('${key}')">
+      <span class="card-emoji">${d.emoji}</span>
+      <div class="card-name">${d.name}</div>
+      <div class="card-country">${d.country}</div>
+    </div>
+  `).join('');
+
+  const input = document.getElementById('dest-search');
+  const results = document.getElementById('search-results');
+
+  input.addEventListener('input', () => {
+    const q = input.value.toLowerCase().trim();
+    if (q.length < 1) { results.classList.remove('show'); return; }
+
+    const matches = entries.filter(([k, d]) =>
+      d.name.toLowerCase().includes(q) || d.country.toLowerCase().includes(q)
+    );
+
+    if (matches.length === 0) {
+      results.innerHTML = '<div style="padding:16px 20px;color:var(--text-light);font-size:14px;">No destinations found</div>';
+    } else {
+      results.innerHTML = matches.map(([key, d]) => `
+        <div class="search-result-item" onclick="selectDestination('${key}')">
+          <span class="emoji">${d.emoji}</span>
+          <div class="info">
+            <h4>${d.name}</h4>
+            <p>${d.country} \u2022 ${d.tagline}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    results.classList.add('show');
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(() => results.classList.remove('show'), 200);
+  });
+}
+
+
+// ===== DESTINATION SELECTION =====
+function selectDestination(key) {
+  state.destination = key;
+  const d = destinations[key];
+  document.getElementById('setup-dest-name').textContent = d.emoji + ' ' + d.name + ', ' + d.country;
+
+  // Set default date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('trip-date').value = tomorrow.toISOString().split('T')[0];
+
+  showScreen('setup');
+}
+
+
+// ===== TRIP SETUP =====
+function changeDays(delta) {
+  state.days = Math.max(1, Math.min(14, state.days + delta));
+  document.getElementById('days-count').textContent = state.days;
+}
+
+function generateItinerary() {
+  state.startDate = document.getElementById('trip-date').value;
+  state.style = document.getElementById('trip-style').value;
+
+  showScreen('loading');
+
+  // Simulate loading
+  setTimeout(() => {
+    state.itinerary = [];
+    for (let i = 1; i <= state.days; i++) {
+      state.itinerary.push({
+        day: i,
+        items: generateDayPlan(state.destination, i, state.days, state.style)
+      });
+    }
+    state.currentDay = 0;
+    renderItinerary();
+    showScreen('itinerary');
+  }, 1800);
+}
+
+
+// ===== ITINERARY RENDERING =====
+function renderItinerary() {
+  const d = destinations[state.destination];
+
+  document.getElementById('itin-dest-name').textContent = d.name + ', ' + d.country;
+
+  const startDate = state.startDate ? new Date(state.startDate + 'T00:00:00') : new Date();
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + state.days - 1);
+  const opts = { month: 'short', day: 'numeric' };
+  document.getElementById('itin-meta').textContent =
+    `${startDate.toLocaleDateString('en-US', opts)} - ${endDate.toLocaleDateString('en-US', opts)} \u2022 ${state.days} day${state.days > 1 ? 's' : ''}`;
+
+  renderDayTabs();
+  renderTimeline();
+}
+
+function renderDayTabs() {
+  const tabs = document.getElementById('day-tabs');
+  tabs.innerHTML = state.itinerary.map((day, i) => `
+    <button class="day-tab ${i === state.currentDay ? 'active' : ''}" onclick="switchDay(${i})">
+      Day ${day.day}
+    </button>
+  `).join('');
+}
+
+function switchDay(idx) {
+  state.currentDay = idx;
+  renderDayTabs();
+  renderTimeline();
+}
+
+function renderTimeline() {
+  const timeline = document.getElementById('timeline');
+  const dayData = state.itinerary[state.currentDay];
+  if (!dayData) return;
+
+  const typeClass = {
+    attraction: 'type-attraction',
+    food: 'type-food',
+    transport: 'type-transport',
+    activity: 'type-activity',
+    rest: 'type-rest'
+  };
+
+  const typeLabel = {
+    attraction: 'Attraction',
+    food: 'Dining',
+    transport: 'Transport',
+    activity: 'Activity',
+    rest: 'Leisure'
+  };
+
+  timeline.innerHTML = dayData.items.map((item, i) => `
+    <div class="timeline-item">
+      <div class="timeline-time">${formatTime(item.time)}</div>
+      <div class="timeline-dot-line">
+        <div class="timeline-dot" style="background:${getDotColor(item.type)}"></div>
+        ${i < dayData.items.length - 1 ? '<div class="timeline-line"></div>' : ''}
+      </div>
+      <div class="timeline-card ${state.editing ? 'editing' : ''}" onclick="${state.editing ? '' : `openDetail(${state.currentDay}, ${i})`}">
+        <button class="delete-btn" onclick="event.stopPropagation(); deleteItem(${i})">&#10005;</button>
+        <div class="timeline-card-header">
+          <div style="display:flex;align-items:center">
+            <span class="card-icon">${item.emoji}</span>
+            <span class="card-title">${item.name}</span>
+          </div>
+          <span class="card-type ${typeClass[item.type] || 'type-attraction'}">${typeLabel[item.type] || item.type}</span>
+        </div>
+        <div class="card-desc">${item.desc}</div>
+        <div class="card-duration">\u23F1 ${item.duration}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function formatTime(time) {
+  const [h, m] = time.split(':');
+  const hour = parseInt(h);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const h12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+  return `${h12}:${m} ${ampm}`;
+}
+
+function getDotColor(type) {
+  const colors = {
+    attraction: 'var(--coral)',
+    food: 'var(--sunset)',
+    transport: 'var(--turquoise)',
+    activity: 'var(--lavender)',
+    rest: 'var(--mint)'
+  };
+  return colors[type] || 'var(--coral)';
+}
+
+
+// ===== EDIT MODE =====
+function toggleEdit() {
+  state.editing = !state.editing;
+  document.getElementById('edit-toolbar').classList.toggle('show', state.editing);
+  document.getElementById('btn-edit').style.background = state.editing ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)';
+  renderTimeline();
+
+  if (!state.editing) {
+    showToast('Itinerary saved!');
+  }
+}
+
+function deleteItem(index) {
+  state.itinerary[state.currentDay].items.splice(index, 1);
+  renderTimeline();
+  showToast('Item removed');
+}
+
+function openAddModal() {
+  document.getElementById('add-modal').classList.add('show');
+  document.getElementById('add-name').value = '';
+  document.getElementById('add-desc').value = '';
+  document.getElementById('add-time').value = '12:00';
+}
+
+function closeAddModal() {
+  document.getElementById('add-modal').classList.remove('show');
+}
+
+function saveNewItem() {
+  const name = document.getElementById('add-name').value.trim();
+  const time = document.getElementById('add-time').value;
+  const type = document.getElementById('add-type').value;
+  const desc = document.getElementById('add-desc').value.trim();
+
+  if (!name) { showToast('Please enter a name'); return; }
+
+  const typeEmojis = {
+    attraction: '\uD83C\uDFDB\uFE0F',
+    food: '\uD83C\uDF7D\uFE0F',
+    activity: '\uD83C\uDFAF',
+    transport: '\uD83D\uDE95',
+    rest: '\u2615'
+  };
+
+  state.itinerary[state.currentDay].items.push({
+    time: time,
+    name: name,
+    emoji: typeEmojis[type] || '\uD83D\uDCCC',
+    type: type,
+    desc: desc || 'Custom itinerary item',
+    duration: '1 hour',
+    attractionKey: null
+  });
+
+  // Sort by time
+  state.itinerary[state.currentDay].items.sort((a, b) => a.time.localeCompare(b.time));
+
+  closeAddModal();
+  renderTimeline();
+  showToast('Added to Day ' + (state.currentDay + 1));
+}
+
+
+// ===== ATTRACTION DETAIL =====
+function openDetail(dayIdx, itemIdx) {
+  const item = state.itinerary[dayIdx].items[itemIdx];
+  const d = destinations[state.destination];
+
+  // Find matching attraction for history
+  let attraction = null;
+  if (item.attractionKey !== null && item.attractionKey !== undefined) {
+    attraction = d.attractions[item.attractionKey];
+  } else {
+    attraction = d.attractions.find(a => a.name === item.name);
+  }
+
+  const hero = document.getElementById('detail-hero');
+  hero.style.background = d.gradient;
+
+  document.getElementById('detail-emoji').textContent = item.emoji;
+  document.getElementById('detail-name').textContent = item.name;
+  document.getElementById('detail-type').textContent = item.type.charAt(0).toUpperCase() + item.type.slice(1) + ' \u2022 ' + (item.duration || '');
+
+  const content = document.getElementById('detail-content');
+  let html = '';
+
+  html += `<div class="detail-section">
+    <h3>\uD83D\uDCCD About</h3>
+    <p>${item.desc}</p>
+  </div>`;
+
+  if (attraction && attraction.history) {
+    html += `<div class="detail-section">
+      <h3>\uD83D\uDCDA History</h3>
+      <p>${attraction.history}</p>
+    </div>`;
+  }
+
+  if (attraction && attraction.tips) {
+    html += `<div class="detail-section">
+      <h3>\uD83D\uDCA1 Tips</h3>
+      <div class="tip">\u2728 ${attraction.tips}</div>
+    </div>`;
+  }
+
+  html += `<div class="detail-section">
+    <h3>\u23F0 Duration</h3>
+    <p>Estimated time: ${item.duration || 'Varies'}</p>
+  </div>`;
+
+  content.innerHTML = html;
+  showScreen('detail');
+}
+
+
+// ===== RESTAURANTS =====
+let activeFilter = 'All';
+
+function openRestaurants() {
+  const d = destinations[state.destination];
+  document.getElementById('rest-dest-name').textContent = d.name;
+  document.getElementById('rest-search').value = '';
+  activeFilter = 'All';
+
+  // Build filter chips
+  const cuisines = ['All', ...new Set(d.restaurants.map(r => r.cuisine))];
+  document.getElementById('filter-chips').innerHTML = cuisines.map(c => `
+    <button class="filter-chip ${c === activeFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>
+  `).join('');
+
+  renderRestaurants(d.restaurants);
+  showScreen('restaurants');
+}
+
+function setFilter(cuisine) {
+  activeFilter = cuisine;
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    c.classList.toggle('active', c.textContent === cuisine);
+  });
+  filterRestaurants();
+}
+
+function filterRestaurants() {
+  const d = destinations[state.destination];
+  const query = document.getElementById('rest-search').value.toLowerCase();
+
+  let filtered = d.restaurants;
+  if (activeFilter !== 'All') {
+    filtered = filtered.filter(r => r.cuisine === activeFilter);
+  }
+  if (query) {
+    filtered = filtered.filter(r =>
+      r.name.toLowerCase().includes(query) ||
+      r.cuisine.toLowerCase().includes(query) ||
+      r.tags.some(t => t.toLowerCase().includes(query))
+    );
+  }
+  renderRestaurants(filtered);
+}
+
+function renderRestaurants(restaurants) {
+  const list = document.getElementById('restaurant-list');
+  if (restaurants.length === 0) {
+    list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-light);">No restaurants found</div>';
+    return;
+  }
+
+  list.innerHTML = restaurants.map((r, i) => `
+    <div class="restaurant-card">
+      <div class="restaurant-emoji">${r.emoji}</div>
+      <div class="restaurant-info">
+        <h3>${r.name}</h3>
+        <div class="restaurant-rating">
+          <span class="stars">${'\u2605'.repeat(Math.floor(r.rating))}${r.rating % 1 >= 0.5 ? '\u00BD' : ''}</span>
+          <span>${r.rating}</span>
+          <span>\u2022</span>
+          <span>${r.price}</span>
+          <span>\u2022</span>
+          <span>${r.cuisine}</span>
+        </div>
+        <div class="restaurant-tags">
+          ${r.tags.map(t => `<span class="restaurant-tag">${t}</span>`).join('')}
+        </div>
+      </div>
+      <button class="add-to-itin-btn" onclick="addRestaurantToItinerary(${i})">+ Add</button>
+    </div>
+  `).join('');
+}
+
+function addRestaurantToItinerary(idx) {
+  const d = destinations[state.destination];
+  const r = d.restaurants[idx];
+
+  state.itinerary[state.currentDay].items.push({
+    time: '12:30',
+    name: r.name,
+    emoji: r.emoji,
+    type: 'food',
+    desc: r.desc,
+    duration: '1-1.5 hours',
+    attractionKey: null
+  });
+
+  state.itinerary[state.currentDay].items.sort((a, b) => a.time.localeCompare(b.time));
+  showToast(`${r.name} added to Day ${state.currentDay + 1}!`);
+}
+
+
+// ===== SHARE =====
+function openShare() {
+  const d = destinations[state.destination];
+  document.getElementById('share-dest-name').textContent = d.name;
+  renderSharePreview();
+  showScreen('share');
+}
+
+function renderSharePreview() {
+  const preview = document.getElementById('share-preview');
+  const d = destinations[state.destination];
+
+  let html = `<h3>${d.emoji} ${d.name} Trip</h3>`;
+
+  state.itinerary.forEach(day => {
+    html += `<div class="day-block">
+      <h4>Day ${day.day}</h4>
+      <ul>
+        ${day.items.map(item => `<li>${item.time} - ${item.emoji} ${item.name}</li>`).join('')}
+      </ul>
+    </div>`;
+  });
+
+  preview.innerHTML = html;
+}
+
+function getItineraryText() {
+  const d = destinations[state.destination];
+  let text = `\u2708\uFE0F TRAVEL COMPANION - ${d.name}, ${d.country}\n`;
+  text += `${'='.repeat(40)}\n\n`;
+
+  state.itinerary.forEach(day => {
+    text += `\uD83D\uDCC5 DAY ${day.day}\n`;
+    text += `${'-'.repeat(20)}\n`;
+    day.items.forEach(item => {
+      text += `  ${formatTime(item.time)}  ${item.emoji} ${item.name}\n`;
+      if (item.desc) text += `              ${item.desc}\n`;
+    });
+    text += '\n';
+  });
+
+  text += `\nCreated with Travel Companion \u2764\uFE0F`;
+  return text;
+}
+
+async function shareNative() {
+  const text = getItineraryText();
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: `Trip to ${destinations[state.destination].name}`,
+        text: text
+      });
+    } catch (e) {
+      if (e.name !== 'AbortError') copyToClipboard();
+    }
+  } else {
+    copyToClipboard();
+  }
+}
+
+async function copyToClipboard() {
+  const text = getItineraryText();
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast('Copied to clipboard!');
+  } catch (e) {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard!');
+  }
+}
+
+function exportText() {
+  const text = getItineraryText();
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `trip-to-${destinations[state.destination].name.toLowerCase().replace(/\s+/g, '-')}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Downloading itinerary...');
+}
+
+
+// ===== TOAST =====
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+
+// ===== INIT =====
+initWelcome();
+</script>
+
+</body>
+</html>
