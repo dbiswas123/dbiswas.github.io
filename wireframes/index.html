@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Layout Wireframes & Visual Design | DJTS-13</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+:root {
+    --coral: #E85A4F;
+    --coral-light: #FF7B6F;
+    --gold: #D4A853;
+    --gold-light: #E8C87A;
+    --black: #1A1A1A;
+    --charcoal: #2D2D2D;
+    --gray-dark: #4A4A4A;
+    --gray: #6B6B6B;
+    --gray-light: #9B9B9B;
+    --gray-lighter: #E5E5E5;
+    --off-white: #FAF9F7;
+    --white: #FFFFFF;
+    --sage: #7D9B8C;
+    --blush: #F5E6E0;
+    --cream: #FDF8F3;
+    --purple-soft: #9B8AA6;
+    --teal-soft: #7AACAC;
+    --font-primary: 'Inter', -apple-system, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-primary); color: var(--charcoal); background: var(--off-white); line-height: 1.6; }
+
+/* Navigation */
+.doc-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray-lighter); padding: 0 2rem;
+}
+.doc-nav-inner {
+    max-width: 1400px; margin: 0 auto; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+.doc-nav h1 { font-size: 1.125rem; font-weight: 700; color: var(--black); }
+.doc-nav h1 span { color: var(--coral); }
+.doc-nav-links { display: flex; gap: 1.5rem; }
+.doc-nav-links a {
+    font-size: 0.875rem; font-weight: 500; color: var(--gray);
+    text-decoration: none; transition: color 0.2s;
+}
+.doc-nav-links a:hover { color: var(--coral); }
+.ticket-badge {
+    background: var(--blush); color: var(--coral); padding: 4px 12px;
+    border-radius: 20px; font-size: 0.75rem; font-weight: 600;
+}
+
+/* Hero */
+.doc-hero {
+    margin-top: 64px; padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 50%, var(--cream) 100%);
+    text-align: center; border-bottom: 1px solid var(--gray-lighter);
+}
+.doc-hero h2 {
+    font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--black); margin-bottom: 1rem;
+}
+.doc-hero p { font-size: 1.125rem; color: var(--gray); max-width: 640px; margin: 0 auto 1.5rem; }
+.meta-row {
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    font-size: 0.875rem; color: var(--gray);
+}
+.meta-row strong { color: var(--charcoal); }
+
+/* Sections */
+.section {
+    max-width: 1400px; margin: 0 auto; padding: 4rem 2rem;
+}
+.section-title {
+    font-family: var(--font-display); font-size: 1.75rem;
+    color: var(--black); margin-bottom: 0.5rem;
+}
+.section-subtitle { color: var(--gray); margin-bottom: 2rem; }
+.section-divider {
+    width: 60px; height: 3px; background: var(--coral);
+    border-radius: 3px; margin-bottom: 2rem;
+}
+
+/* Color Palette */
+.color-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+}
+.color-card {
+    background: var(--white); border-radius: 12px;
+    overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+}
+.color-card:hover { transform: translateY(-4px); }
+.color-swatch { height: 100px; }
+.color-info { padding: 1rem; }
+.color-name { font-weight: 600; font-size: 0.9375rem; color: var(--black); }
+.color-hex { font-size: 0.8125rem; color: var(--gray); font-family: monospace; }
+.color-use { font-size: 0.75rem; color: var(--gray-light); margin-top: 4px; }
+
+/* Typography */
+.type-sample {
+    background: var(--white); border-radius: 12px; padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 1rem;
+}
+.type-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--coral); margin-bottom: 0.5rem;
+}
+.type-demo-h1 { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--black); }
+.type-demo-h2 { font-family: var(--font-display); font-size: 2.25rem; font-weight: 700; color: var(--black); }
+.type-demo-h3 { font-size: 1.5rem; font-weight: 700; color: var(--black); }
+.type-demo-body { font-size: 1rem; color: var(--charcoal); max-width: 600px; }
+.type-demo-small { font-size: 0.875rem; color: var(--gray); }
+.type-specs { font-size: 0.8125rem; color: var(--gray-light); margin-top: 0.5rem; font-family: monospace; }
+
+/* Wireframe blocks */
+.wireframe-container {
+    background: var(--white); border-radius: 16px; padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 2rem;
+    overflow: hidden;
+}
+.wireframe-label {
+    font-size: 0.8125rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--coral); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem;
+}
+.wireframe-label::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--coral); display: inline-block;
+}
+.wf {
+    border: 2px dashed var(--gray-lighter); border-radius: 8px;
+    background: var(--off-white); position: relative;
+}
+.wf-navbar {
+    height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 1.5rem;
+    border-bottom: 2px dashed var(--gray-lighter);
+}
+.wf-logo { width: 120px; height: 24px; background: var(--gray-lighter); border-radius: 4px; }
+.wf-nav-links { display: flex; gap: 1rem; }
+.wf-nav-link { width: 50px; height: 8px; background: var(--gray-lighter); border-radius: 4px; }
+.wf-btn-placeholder {
+    width: 100px; height: 32px; background: var(--coral);
+    border-radius: 20px; opacity: 0.3;
+}
+.wf-hero-section {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    padding: 3rem 2rem; min-height: 300px;
+}
+.wf-text-block { display: flex; flex-direction: column; gap: 1rem; justify-content: center; }
+.wf-heading-lg { width: 80%; height: 28px; background: var(--gray-lighter); border-radius: 4px; }
+.wf-heading-md { width: 60%; height: 20px; background: var(--gray-lighter); border-radius: 4px; }
+.wf-text-line { width: 90%; height: 10px; background: #eee; border-radius: 3px; }
+.wf-text-line.short { width: 65%; }
+.wf-cta-row { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
+.wf-cta {
+    width: 120px; height: 40px; border-radius: 20px;
+    background: var(--coral); opacity: 0.25;
+}
+.wf-cta.secondary { background: var(--gray-lighter); opacity: 0.5; }
+.wf-image-placeholder {
+    background: var(--blush); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gray-light); font-size: 2rem; min-height: 200px;
+}
+.wf-grid-section { padding: 2rem; }
+.wf-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.wf-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.wf-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; padding: 2rem; }
+.wf-card {
+    background: var(--white); border: 2px dashed var(--gray-lighter);
+    border-radius: 12px; padding: 1.5rem; text-align: center;
+}
+.wf-card-icon {
+    width: 48px; height: 48px; background: var(--blush);
+    border-radius: 50%; margin: 0 auto 0.75rem;
+}
+.wf-card-title { width: 70%; height: 12px; background: var(--gray-lighter); border-radius: 3px; margin: 0 auto 0.5rem; }
+.wf-card-text { width: 90%; height: 8px; background: #eee; border-radius: 3px; margin: 0 auto 0.25rem; }
+.wf-section-header { text-align: center; padding: 2rem 2rem 1rem; }
+.wf-footer {
+    background: var(--charcoal); padding: 2rem; border-radius: 0 0 8px 8px;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1.5rem;
+}
+.wf-footer-col { display: flex; flex-direction: column; gap: 0.5rem; }
+.wf-footer-line { width: 80%; height: 6px; background: var(--gray-dark); border-radius: 3px; }
+.wf-footer-line.wide { width: 100%; }
+
+/* Component Library */
+.component-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+.component-card {
+    background: var(--white); border-radius: 12px; padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.component-title {
+    font-size: 0.875rem; font-weight: 700; color: var(--black);
+    margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.btn-demo {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600;
+    border-radius: 9999px; border: none; cursor: pointer; transition: all 0.2s;
+    text-decoration: none;
+}
+.btn-demo-primary {
+    background: linear-gradient(135deg, var(--coral) 0%, #C97B5D 100%);
+    color: white; box-shadow: 0 4px 12px rgba(232,90,79,0.3);
+}
+.btn-demo-secondary {
+    background: white; color: var(--charcoal);
+    border: 2px solid var(--gray-lighter);
+}
+.btn-demo-tertiary {
+    background: var(--blush); color: var(--coral);
+}
+.input-demo {
+    width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--gray-lighter);
+    border-radius: 12px; font-size: 0.9375rem; font-family: var(--font-primary);
+    transition: border-color 0.2s; outline: none;
+}
+.input-demo:focus { border-color: var(--coral); }
+.badge-demo {
+    display: inline-block; padding: 0.375rem 0.75rem;
+    font-size: 0.75rem; font-weight: 600; border-radius: 20px;
+}
+.badge-coral { background: var(--blush); color: var(--coral); }
+.badge-sage { background: #e8f0ec; color: var(--sage); }
+.badge-gold { background: #fdf3e0; color: #b8860b; }
+.card-demo {
+    background: var(--cream); border-radius: 16px; padding: 1.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-demo:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+
+/* Spacing & Grid specs */
+.spec-table {
+    width: 100%; border-collapse: collapse; background: var(--white);
+    border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.spec-table th {
+    background: var(--cream); text-align: left; padding: 1rem;
+    font-size: 0.8125rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; color: var(--gray-dark);
+}
+.spec-table td {
+    padding: 0.875rem 1rem; border-top: 1px solid var(--gray-lighter);
+    font-size: 0.9375rem; color: var(--charcoal);
+}
+.spec-table code {
+    background: var(--cream); padding: 2px 8px; border-radius: 4px;
+    font-size: 0.8125rem;
+}
+
+/* Responsive wireframe */
+.responsive-demos {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem;
+    align-items: start;
+}
+.device-frame {
+    background: var(--white); border-radius: 16px; padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center;
+}
+.device-label {
+    font-size: 0.8125rem; font-weight: 700; color: var(--gray);
+    margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.device-screen {
+    border: 2px solid var(--gray-lighter); border-radius: 8px;
+    overflow: hidden; background: var(--off-white);
+}
+.device-screen.desktop { min-height: 200px; }
+.device-screen.tablet { max-width: 280px; margin: 0 auto; min-height: 200px; }
+.device-screen.mobile { max-width: 180px; margin: 0 auto; min-height: 280px; }
+
+/* Annotations */
+.annotation {
+    position: relative; display: inline-block;
+    border-bottom: 2px dashed var(--coral); cursor: help;
+}
+.annotation-note {
+    font-size: 0.75rem; color: var(--coral); font-style: italic;
+    margin-top: 0.5rem;
+}
+
+/* Page Map */
+.page-map {
+    display: flex; flex-direction: column; gap: 1rem;
+    background: var(--white); border-radius: 12px; padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.page-map-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem; border-radius: 8px; background: var(--off-white);
+    transition: background 0.2s;
+}
+.page-map-item:hover { background: var(--blush); }
+.page-map-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem; flex-shrink: 0;
+}
+.page-map-icon.home { background: var(--blush); }
+.page-map-icon.about { background: #e8f0ec; }
+.page-map-icon.forums { background: #e8e4f0; }
+.page-map-icon.resources { background: #fdf3e0; }
+.page-map-icon.events { background: #e0f0f8; }
+.page-map-icon.join { background: var(--blush); }
+.page-map-info h4 { font-size: 0.9375rem; color: var(--black); }
+.page-map-info p { font-size: 0.8125rem; color: var(--gray); }
+
+/* Flow diagram */
+.flow-diagram {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0.5rem; flex-wrap: wrap; padding: 2rem;
+    background: var(--white); border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.flow-node {
+    padding: 0.75rem 1.25rem; border-radius: 8px; font-size: 0.8125rem;
+    font-weight: 600; text-align: center;
+}
+.flow-node.start { background: var(--blush); color: var(--coral); }
+.flow-node.page { background: var(--cream); color: var(--charcoal); border: 2px solid var(--gray-lighter); }
+.flow-node.action { background: var(--coral); color: white; border-radius: 20px; }
+.flow-arrow { color: var(--gray-light); font-size: 1.25rem; }
+
+@media (max-width: 1024px) {
+    .wf-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .wf-hero-section { grid-template-columns: 1fr; }
+    .responsive-demos { grid-template-columns: 1fr; }
+    .wf-footer { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .wf-grid-3 { grid-template-columns: 1fr; }
+    .wf-grid-2 { grid-template-columns: 1fr; }
+    .color-grid { grid-template-columns: repeat(2, 1fr); }
+    .component-grid { grid-template-columns: 1fr; }
+    .doc-nav-links { display: none; }
+}
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="doc-nav">
+        <div class="doc-nav-inner">
+            <h1>ElevateHer <span>Design System</span></h1>
+            <div class="doc-nav-links">
+                <a href="#colors">Colors</a>
+                <a href="#typography">Typography</a>
+                <a href="#wireframes">Wireframes</a>
+                <a href="#components">Components</a>
+                <a href="#responsive">Responsive</a>
+                <a href="#sitemap">Site Map</a>
+            </div>
+            <span class="ticket-badge">DJTS-13</span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="doc-hero">
+        <h2>Website Layout &amp; Visual Design</h2>
+        <p>Wireframes, design system, and visual specifications for the ElevateHer community platform &mdash; ensuring a user-friendly and appealing layout.</p>
+        <div class="meta-row">
+            <span><strong>Ticket:</strong> DJTS-13</span>
+            <span><strong>Project:</strong> ElevateHer</span>
+            <span><strong>Type:</strong> Community Platform</span>
+            <span><strong>Status:</strong> Design Phase</span>
+        </div>
+    </header>
+
+    <!-- SECTION: Site Map -->
+    <section class="section" id="sitemap">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Site Map &amp; Information Architecture</h2>
+        <p class="section-subtitle">The website consists of 6 primary pages, each serving a distinct purpose in the user journey.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div class="page-map">
+                <div class="page-map-item">
+                    <div class="page-map-icon home">&#127968;</div>
+                    <div class="page-map-info">
+                        <h4>Home</h4>
+                        <p>Hero, value propositions, trending forums, events, testimonials, CTA</p>
+                    </div>
+                </div>
+                <div class="page-map-item">
+                    <div class="page-map-icon about">&#128161;</div>
+                    <div class="page-map-info">
+                        <h4>About</h4>
+                        <p>Brand story, mission, core values with illustrations</p>
+                    </div>
+                </div>
+                <div class="page-map-item">
+                    <div class="page-map-icon forums">&#128172;</div>
+                    <div class="page-map-info">
+                        <h4>Forums</h4>
+                        <p>Filterable discussion threads with voting and tags</p>
+                    </div>
+                </div>
+                <div class="page-map-item">
+                    <div class="page-map-icon resources">&#128218;</div>
+                    <div class="page-map-info">
+                        <h4>Resources</h4>
+                        <p>Categorized templates, guides, and tools</p>
+                    </div>
+                </div>
+                <div class="page-map-item">
+                    <div class="page-map-icon events">&#128197;</div>
+                    <div class="page-map-info">
+                        <h4>Events</h4>
+                        <p>Upcoming workshops, fireside chats, networking sessions</p>
+                    </div>
+                </div>
+                <div class="page-map-item">
+                    <div class="page-map-icon join">&#10024;</div>
+                    <div class="page-map-info">
+                        <h4>Join</h4>
+                        <p>Registration form, membership benefits, social signup</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">User Flow</h3>
+                <div class="flow-diagram">
+                    <div class="flow-node start">Landing</div>
+                    <span class="flow-arrow">&rarr;</span>
+                    <div class="flow-node page">Home</div>
+                    <span class="flow-arrow">&rarr;</span>
+                    <div class="flow-node page">Explore (About / Forums / Resources / Events)</div>
+                    <span class="flow-arrow">&rarr;</span>
+                    <div class="flow-node action">Join the Circle</div>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">Design Principles</h3>
+                    <div style="background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem;">
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <span style="color: var(--coral); font-weight: 700;">01</span>
+                                <div><strong>Warmth &amp; Inclusivity</strong><br><span style="color: var(--gray); font-size: 0.875rem;">Coral &amp; gold tones create a welcoming, empowering atmosphere</span></div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <span style="color: var(--coral); font-weight: 700;">02</span>
+                                <div><strong>Clean &amp; Scannable</strong><br><span style="color: var(--gray); font-size: 0.875rem;">Clear hierarchy, generous whitespace, intuitive navigation</span></div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <span style="color: var(--coral); font-weight: 700;">03</span>
+                                <div><strong>Mobile-First Responsive</strong><br><span style="color: var(--gray); font-size: 0.875rem;">Graceful adaptation from 320px to 1440px+</span></div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <span style="color: var(--coral); font-weight: 700;">04</span>
+                                <div><strong>Action-Oriented</strong><br><span style="color: var(--gray); font-size: 0.875rem;">Clear CTAs guide users toward joining the community</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Colors -->
+    <section class="section" id="colors">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Color Palette</h2>
+        <p class="section-subtitle">A warm, empowering palette centered on coral and gold, balanced with neutral tones.</p>
+
+        <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--gray-dark);">Primary Colors</h3>
+        <div class="color-grid" style="margin-bottom: 2rem;">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #E85A4F;"></div>
+                <div class="color-info">
+                    <div class="color-name">Coral</div>
+                    <div class="color-hex">#E85A4F</div>
+                    <div class="color-use">Primary brand, CTAs, highlights</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #FF7B6F;"></div>
+                <div class="color-info">
+                    <div class="color-name">Coral Light</div>
+                    <div class="color-hex">#FF7B6F</div>
+                    <div class="color-use">Hover states, accents</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #D4A853;"></div>
+                <div class="color-info">
+                    <div class="color-name">Gold</div>
+                    <div class="color-hex">#D4A853</div>
+                    <div class="color-use">Premium accents, decorative</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #C97B5D;"></div>
+                <div class="color-info">
+                    <div class="color-name">Terracotta</div>
+                    <div class="color-hex">#C97B5D</div>
+                    <div class="color-use">Gradient endpoints, warmth</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--gray-dark);">Supporting Colors</h3>
+        <div class="color-grid" style="margin-bottom: 2rem;">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #7D9B8C;"></div>
+                <div class="color-info">
+                    <div class="color-name">Sage</div>
+                    <div class="color-hex">#7D9B8C</div>
+                    <div class="color-use">Success, nature, balance</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #9B8AA6;"></div>
+                <div class="color-info">
+                    <div class="color-name">Purple Soft</div>
+                    <div class="color-hex">#9B8AA6</div>
+                    <div class="color-use">Diversity, creativity</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #7AACAC;"></div>
+                <div class="color-info">
+                    <div class="color-name">Teal Soft</div>
+                    <div class="color-hex">#7AACAC</div>
+                    <div class="color-use">Technology, trust</div>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--gray-dark);">Neutrals &amp; Backgrounds</h3>
+        <div class="color-grid">
+            <div class="color-card">
+                <div class="color-swatch" style="background: #1A1A1A;"></div>
+                <div class="color-info">
+                    <div class="color-name">Black</div>
+                    <div class="color-hex">#1A1A1A</div>
+                    <div class="color-use">Headings, footer</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #2D2D2D;"></div>
+                <div class="color-info">
+                    <div class="color-name">Charcoal</div>
+                    <div class="color-hex">#2D2D2D</div>
+                    <div class="color-use">Body text, dark sections</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #6B6B6B;"></div>
+                <div class="color-info">
+                    <div class="color-name">Gray</div>
+                    <div class="color-hex">#6B6B6B</div>
+                    <div class="color-use">Secondary text</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #F5E6E0;"></div>
+                <div class="color-info">
+                    <div class="color-name">Blush</div>
+                    <div class="color-hex">#F5E6E0</div>
+                    <div class="color-use">Badges, highlights</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #FDF8F3;"></div>
+                <div class="color-info">
+                    <div class="color-name">Cream</div>
+                    <div class="color-hex">#FDF8F3</div>
+                    <div class="color-use">Card backgrounds, subtle fills</div>
+                </div>
+            </div>
+            <div class="color-card">
+                <div class="color-swatch" style="background: #FAF9F7; border: 1px solid #E5E5E5;"></div>
+                <div class="color-info">
+                    <div class="color-name">Off White</div>
+                    <div class="color-hex">#FAF9F7</div>
+                    <div class="color-use">Page backgrounds</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Typography -->
+    <section class="section" id="typography">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Typography</h2>
+        <p class="section-subtitle">Two complementary typefaces: Playfair Display for headings and Inter for body text.</p>
+
+        <div class="type-sample">
+            <div class="type-label">H1 &mdash; Display Heading</div>
+            <div class="type-demo-h1">Your Career. Your Power.</div>
+            <div class="type-specs">Playfair Display 700 | clamp(2.5rem, 5vw, 4rem) | letter-spacing: -0.03em</div>
+        </div>
+        <div class="type-sample">
+            <div class="type-label">H2 &mdash; Section Heading</div>
+            <div class="type-demo-h2">Everything You Need</div>
+            <div class="type-specs">Playfair Display 700 | clamp(2rem, 4vw, 3rem) | letter-spacing: -0.02em</div>
+        </div>
+        <div class="type-sample">
+            <div class="type-label">H3 &mdash; Card Heading</div>
+            <div class="type-demo-h3">Real Conversations</div>
+            <div class="type-specs">Inter 700 | clamp(1.25rem, 2.5vw, 1.5rem)</div>
+        </div>
+        <div class="type-sample">
+            <div class="type-label">Body Text</div>
+            <div class="type-demo-body">Connect with senior women leaders who've been where you are. Get real advice, share resources, and rise together in a community that has your back.</div>
+            <div class="type-specs">Inter 400 | 1rem (16px) | line-height: 1.6</div>
+        </div>
+        <div class="type-sample">
+            <div class="type-label">Small / Meta Text</div>
+            <div class="type-demo-small">Posted 2 hours ago &bull; 24 replies &bull; Career Growth</div>
+            <div class="type-specs">Inter 400-500 | 0.875rem (14px) | color: var(--gray)</div>
+        </div>
+    </section>
+
+    <!-- SECTION: Wireframes -->
+    <section class="section" id="wireframes">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Page Wireframes</h2>
+        <p class="section-subtitle">Structural layout wireframes showing content hierarchy and spatial relationships.</p>
+
+        <!-- Home Page Wireframe -->
+        <div class="wireframe-container">
+            <div class="wireframe-label">Home Page &mdash; Hero + Navigation</div>
+            <div class="wf">
+                <div class="wf-navbar">
+                    <div class="wf-logo"></div>
+                    <div class="wf-nav-links">
+                        <div class="wf-nav-link"></div>
+                        <div class="wf-nav-link"></div>
+                        <div class="wf-nav-link"></div>
+                        <div class="wf-nav-link"></div>
+                        <div class="wf-nav-link"></div>
+                    </div>
+                    <div class="wf-btn-placeholder"></div>
+                </div>
+                <div class="wf-hero-section">
+                    <div class="wf-text-block">
+                        <div style="width: 140px; height: 20px; background: var(--blush); border-radius: 10px;"></div>
+                        <div class="wf-heading-lg"></div>
+                        <div class="wf-heading-lg" style="width: 60%;"></div>
+                        <div class="wf-text-line"></div>
+                        <div class="wf-text-line short"></div>
+                        <div class="wf-cta-row">
+                            <div class="wf-cta"></div>
+                            <div class="wf-cta secondary"></div>
+                        </div>
+                        <div style="display: flex; gap: 2rem; margin-top: 1rem;">
+                            <div style="display:flex;flex-direction:column;gap:4px;">
+                                <div style="width:60px;height:16px;background:var(--gray-lighter);border-radius:3px;"></div>
+                                <div style="width:80px;height:8px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:4px;">
+                                <div style="width:50px;height:16px;background:var(--gray-lighter);border-radius:3px;"></div>
+                                <div style="width:70px;height:8px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                            <div style="display:flex;flex-direction:column;gap:4px;">
+                                <div style="width:40px;height:16px;background:var(--gray-lighter);border-radius:3px;"></div>
+                                <div style="width:90px;height:8px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wf-image-placeholder">
+                        <svg width="80" height="80" viewBox="0 0 80 80" fill="none"><circle cx="40" cy="30" r="12" stroke="#ccc" stroke-width="2"/><path d="M20 65 Q40 45 60 65" stroke="#ccc" stroke-width="2" fill="none"/><circle cx="30" cy="50" r="6" stroke="#ccc" stroke-width="2" fill="none"/><circle cx="50" cy="50" r="6" stroke="#ccc" stroke-width="2" fill="none"/></svg>
+                    </div>
+                </div>
+            </div>
+            <p class="annotation-note">&#9733; Fixed navbar (72px height) with frosted glass effect. Hero uses 2-column grid with SVG illustrations.</p>
+        </div>
+
+        <!-- Value Props Wireframe -->
+        <div class="wireframe-container">
+            <div class="wireframe-label">Home Page &mdash; Value Propositions</div>
+            <div class="wf">
+                <div class="wf-section-header">
+                    <div class="wf-heading-md" style="margin: 0 auto 0.5rem;"></div>
+                    <div class="wf-text-line" style="width: 50%; margin: 0 auto;"></div>
+                </div>
+                <div class="wf-grid-section">
+                    <div class="wf-grid-4">
+                        <div class="wf-card">
+                            <div class="wf-card-icon"></div>
+                            <div class="wf-card-title"></div>
+                            <div class="wf-card-text"></div>
+                            <div class="wf-card-text" style="width: 70%;"></div>
+                        </div>
+                        <div class="wf-card">
+                            <div class="wf-card-icon"></div>
+                            <div class="wf-card-title"></div>
+                            <div class="wf-card-text"></div>
+                            <div class="wf-card-text" style="width: 70%;"></div>
+                        </div>
+                        <div class="wf-card">
+                            <div class="wf-card-icon"></div>
+                            <div class="wf-card-title"></div>
+                            <div class="wf-card-text"></div>
+                            <div class="wf-card-text" style="width: 70%;"></div>
+                        </div>
+                        <div class="wf-card">
+                            <div class="wf-card-icon"></div>
+                            <div class="wf-card-title"></div>
+                            <div class="wf-card-text"></div>
+                            <div class="wf-card-text" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="annotation-note">&#9733; 4-column grid with icon cards. Each card has hover lift effect. Collapses to 2-col on tablet, 1-col on mobile.</p>
+        </div>
+
+        <!-- Discussion Cards Wireframe -->
+        <div class="wireframe-container">
+            <div class="wireframe-label">Home Page &mdash; Trending Discussions</div>
+            <div class="wf">
+                <div class="wf-grid-2">
+                    <div class="wf-text-block">
+                        <div class="wf-heading-md"></div>
+                        <div class="wf-text-line"></div>
+                        <div class="wf-text-line short"></div>
+                        <div style="margin-top:0.5rem;">
+                            <div class="wf-cta secondary" style="width:160px;background:var(--gray-lighter);"></div>
+                        </div>
+                    </div>
+                    <div class="wf-image-placeholder" style="min-height:160px;">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none"><rect x="5" y="10" width="30" height="22" rx="4" stroke="#ccc" stroke-width="2"/><rect x="25" y="25" width="30" height="22" rx="4" stroke="#ccc" stroke-width="2"/><circle cx="37" cy="36" r="2" fill="#ccc"/><circle cx="43" cy="36" r="2" fill="#ccc"/></svg>
+                    </div>
+                </div>
+                <div class="wf-grid-section">
+                    <div class="wf-grid-3">
+                        <div class="wf-card" style="text-align: left;">
+                            <div style="width:60px;height:16px;background:var(--blush);border-radius:8px;margin-bottom:0.75rem;"></div>
+                            <div class="wf-card-title" style="margin:0 0 0.5rem;width:85%;"></div>
+                            <div class="wf-card-text" style="margin:0 0 0.25rem;"></div>
+                            <div class="wf-card-text" style="width:75%;margin:0 0 1rem;"></div>
+                            <div style="border-top:1px dashed var(--gray-lighter);padding-top:0.75rem;display:flex;justify-content:space-between;">
+                                <div style="display:flex;gap:0.5rem;align-items:center;">
+                                    <div style="width:24px;height:24px;border-radius:50%;background:var(--blush);"></div>
+                                    <div style="width:60px;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                                <div style="width:40px;height:6px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                        </div>
+                        <div class="wf-card" style="text-align: left;">
+                            <div style="width:70px;height:16px;background:var(--blush);border-radius:8px;margin-bottom:0.75rem;"></div>
+                            <div class="wf-card-title" style="margin:0 0 0.5rem;width:80%;"></div>
+                            <div class="wf-card-text" style="margin:0 0 0.25rem;"></div>
+                            <div class="wf-card-text" style="width:65%;margin:0 0 1rem;"></div>
+                            <div style="border-top:1px dashed var(--gray-lighter);padding-top:0.75rem;display:flex;justify-content:space-between;">
+                                <div style="display:flex;gap:0.5rem;align-items:center;">
+                                    <div style="width:24px;height:24px;border-radius:50%;background:var(--blush);"></div>
+                                    <div style="width:50px;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                                <div style="width:35px;height:6px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                        </div>
+                        <div class="wf-card" style="text-align: left;">
+                            <div style="width:55px;height:16px;background:var(--blush);border-radius:8px;margin-bottom:0.75rem;"></div>
+                            <div class="wf-card-title" style="margin:0 0 0.5rem;width:90%;"></div>
+                            <div class="wf-card-text" style="margin:0 0 0.25rem;"></div>
+                            <div class="wf-card-text" style="width:80%;margin:0 0 1rem;"></div>
+                            <div style="border-top:1px dashed var(--gray-lighter);padding-top:0.75rem;display:flex;justify-content:space-between;">
+                                <div style="display:flex;gap:0.5rem;align-items:center;">
+                                    <div style="width:24px;height:24px;border-radius:50%;background:var(--blush);"></div>
+                                    <div style="width:55px;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                                <div style="width:30px;height:6px;background:#eee;border-radius:3px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="annotation-note">&#9733; 2-column intro (text + illustration) followed by 3-column discussion cards with category badges, author avatars, and engagement metrics.</p>
+        </div>
+
+        <!-- Footer Wireframe -->
+        <div class="wireframe-container">
+            <div class="wireframe-label">Footer</div>
+            <div class="wf">
+                <div class="wf-footer">
+                    <div class="wf-footer-col">
+                        <div class="wf-footer-line wide" style="height:10px;width:100px;"></div>
+                        <div class="wf-footer-line" style="width:90%;"></div>
+                        <div class="wf-footer-line" style="width:70%;"></div>
+                    </div>
+                    <div class="wf-footer-col">
+                        <div class="wf-footer-line" style="height:8px;width:60px;background:var(--gray);"></div>
+                        <div class="wf-footer-line"></div>
+                        <div class="wf-footer-line" style="width:70%;"></div>
+                        <div class="wf-footer-line" style="width:60%;"></div>
+                    </div>
+                    <div class="wf-footer-col">
+                        <div class="wf-footer-line" style="height:8px;width:60px;background:var(--gray);"></div>
+                        <div class="wf-footer-line"></div>
+                        <div class="wf-footer-line" style="width:65%;"></div>
+                        <div class="wf-footer-line" style="width:75%;"></div>
+                    </div>
+                    <div class="wf-footer-col">
+                        <div class="wf-footer-line" style="height:8px;width:50px;background:var(--gray);"></div>
+                        <div class="wf-footer-line" style="width:85%;"></div>
+                        <div class="wf-footer-line" style="width:60%;"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="annotation-note">&#9733; Dark footer with 4-column grid: Brand info (2fr) + 3 link columns (1fr each). Social icons row at bottom.</p>
+        </div>
+
+        <!-- Join Page Wireframe -->
+        <div class="wireframe-container">
+            <div class="wireframe-label">Join Page &mdash; Registration</div>
+            <div class="wf">
+                <div class="wf-section-header">
+                    <div class="wf-heading-lg" style="margin: 0 auto 0.5rem; width: 50%;"></div>
+                    <div class="wf-text-line" style="width: 40%; margin: 0 auto;"></div>
+                </div>
+                <div class="wf-grid-2">
+                    <div style="padding: 1rem;">
+                        <div class="wf-heading-md" style="margin-bottom: 1rem;"></div>
+                        <div class="wf-text-line" style="margin-bottom:0.5rem;"></div>
+                        <div class="wf-text-line short" style="margin-bottom:1.5rem;"></div>
+                        <div style="display:flex;flex-direction:column;gap:1rem;">
+                            <div style="display:flex;gap:0.75rem;align-items:center;">
+                                <div style="width:40px;height:40px;border-radius:10px;background:var(--blush);flex-shrink:0;"></div>
+                                <div style="flex:1;">
+                                    <div style="width:60%;height:10px;background:var(--gray-lighter);border-radius:3px;margin-bottom:4px;"></div>
+                                    <div style="width:80%;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:0.75rem;align-items:center;">
+                                <div style="width:40px;height:40px;border-radius:10px;background:#e8f0ec;flex-shrink:0;"></div>
+                                <div style="flex:1;">
+                                    <div style="width:50%;height:10px;background:var(--gray-lighter);border-radius:3px;margin-bottom:4px;"></div>
+                                    <div style="width:75%;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:0.75rem;align-items:center;">
+                                <div style="width:40px;height:40px;border-radius:10px;background:#fdf3e0;flex-shrink:0;"></div>
+                                <div style="flex:1;">
+                                    <div style="width:70%;height:10px;background:var(--gray-lighter);border-radius:3px;margin-bottom:4px;"></div>
+                                    <div style="width:65%;height:6px;background:#eee;border-radius:3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:var(--white);border:2px dashed var(--gray-lighter);border-radius:16px;padding:1.5rem;">
+                        <div style="text-align:center;margin-bottom:1.5rem;">
+                            <div style="width:50%;height:14px;background:var(--gray-lighter);border-radius:3px;margin:0 auto;"></div>
+                        </div>
+                        <div style="display:flex;flex-direction:column;gap:1rem;">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+                                <div><div style="width:50px;height:6px;background:#eee;border-radius:3px;margin-bottom:6px;"></div><div style="height:36px;border:2px solid var(--gray-lighter);border-radius:8px;"></div></div>
+                                <div><div style="width:50px;height:6px;background:#eee;border-radius:3px;margin-bottom:6px;"></div><div style="height:36px;border:2px solid var(--gray-lighter);border-radius:8px;"></div></div>
+                            </div>
+                            <div><div style="width:40px;height:6px;background:#eee;border-radius:3px;margin-bottom:6px;"></div><div style="height:36px;border:2px solid var(--gray-lighter);border-radius:8px;"></div></div>
+                            <div><div style="width:55px;height:6px;background:#eee;border-radius:3px;margin-bottom:6px;"></div><div style="height:36px;border:2px solid var(--gray-lighter);border-radius:8px;"></div></div>
+                            <div style="height:40px;background:var(--coral);opacity:0.25;border-radius:20px;margin-top:0.5rem;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="annotation-note">&#9733; 2-column layout: Benefits list with icons on left, registration form with shadow card on right. Form includes social login options.</p>
+        </div>
+    </section>
+
+    <!-- SECTION: Components -->
+    <section class="section" id="components">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Component Library</h2>
+        <p class="section-subtitle">Reusable UI components that maintain visual consistency across all pages.</p>
+
+        <div class="component-grid">
+            <!-- Buttons -->
+            <div class="component-card">
+                <div class="component-title">Buttons</div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <button class="btn-demo btn-demo-primary">Join ElevateHer</button>
+                    <button class="btn-demo btn-demo-secondary">See How It Works</button>
+                    <button class="btn-demo btn-demo-tertiary">Explore All &rarr;</button>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--gray-light);">
+                    Primary: gradient coral | Secondary: outlined | Tertiary: blush fill<br>
+                    Border-radius: 9999px (pill) | Padding: 0.875rem 1.75rem
+                </div>
+            </div>
+
+            <!-- Badges -->
+            <div class="component-card">
+                <div class="component-title">Badges &amp; Tags</div>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <span class="badge-demo badge-coral">Career Growth</span>
+                    <span class="badge-demo badge-sage">Mentorship</span>
+                    <span class="badge-demo badge-gold">Featured</span>
+                    <span class="badge-demo" style="background:#e8e4f0;color:var(--purple-soft);">Workshop</span>
+                    <span class="badge-demo" style="background:#e0f0f0;color:var(--teal-soft);">Virtual</span>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--gray-light);">
+                    Font: 0.75rem 600 | Padding: 0.25rem 0.75rem | Radius: 20px
+                </div>
+            </div>
+
+            <!-- Form Input -->
+            <div class="component-card">
+                <div class="component-title">Form Inputs</div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div>
+                        <label style="font-size: 0.8125rem; font-weight: 500; display: block; margin-bottom: 4px;">Email Address</label>
+                        <input class="input-demo" type="text" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.8125rem; font-weight: 500; display: block; margin-bottom: 4px;">Your Role</label>
+                        <select class="input-demo" style="appearance: auto;">
+                            <option>Select your role...</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--gray-light);">
+                    Border: 2px solid #E5E5E5 | Focus: coral border + glow | Radius: 12px
+                </div>
+            </div>
+
+            <!-- Cards -->
+            <div class="component-card">
+                <div class="component-title">Content Card</div>
+                <div class="card-demo">
+                    <span class="badge-demo badge-coral" style="margin-bottom: 0.75rem; display: inline-block;">Leadership</span>
+                    <h4 style="font-size: 1rem; margin-bottom: 0.5rem;">How I negotiated a 40% raise</h4>
+                    <p style="font-size: 0.875rem; color: var(--gray); margin-bottom: 1rem;">Sharing my exact framework for salary negotiation...</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.75rem; border-top: 1px solid var(--gray-lighter);">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 24px; height: 24px; border-radius: 50%; background: linear-gradient(135deg, var(--coral-light), var(--gold));"></div>
+                            <span style="font-size: 0.75rem; color: var(--gray);">Sarah K.</span>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--gray-light);">24 replies</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="component-card">
+                <div class="component-title">Navigation Bar</div>
+                <div style="background: var(--white); border: 1px solid var(--gray-lighter); border-radius: 8px; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--coral), #C97B5D);"></div>
+                        <span style="font-weight: 700; font-size: 0.875rem;">ElevateHer</span>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <span style="font-size: 0.75rem; color: var(--coral); font-weight: 500;">Home</span>
+                        <span style="font-size: 0.75rem; color: var(--gray); font-weight: 500;">About</span>
+                        <span style="font-size: 0.75rem; color: var(--gray); font-weight: 500;">Forums</span>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--gray-light);">
+                    Fixed position | Glass effect: rgba(255,255,255,0.95) + blur(20px)<br>
+                    Height: 72px | Active link: coral with underline indicator
+                </div>
+            </div>
+
+            <!-- Avatar -->
+            <div class="component-card">
+                <div class="component-title">Avatars &amp; Profiles</div>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--coral-light), var(--gold));"></div>
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-soft), var(--sage));"></div>
+                    <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-soft), var(--coral));"></div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.75rem; color: var(--gray-light);">
+                    Large: 48px | Medium: 36px | Small: 28px<br>
+                    Gradient fills with warm tones | Full radius
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Spacing & Grid -->
+    <section class="section" id="spacing">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Spacing &amp; Grid System</h2>
+        <p class="section-subtitle">Consistent spacing tokens and grid specifications for layout construction.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">Spacing Tokens</h3>
+                <table class="spec-table">
+                    <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>--space-xs</code></td><td>0.25rem (4px)</td><td>Tight gaps</td></tr>
+                        <tr><td><code>--space-sm</code></td><td>0.5rem (8px)</td><td>Small gaps</td></tr>
+                        <tr><td><code>--space-md</code></td><td>1rem (16px)</td><td>Default spacing</td></tr>
+                        <tr><td><code>--space-lg</code></td><td>1.5rem (24px)</td><td>Section padding</td></tr>
+                        <tr><td><code>--space-xl</code></td><td>2rem (32px)</td><td>Card gaps</td></tr>
+                        <tr><td><code>--space-2xl</code></td><td>3rem (48px)</td><td>Large sections</td></tr>
+                        <tr><td><code>--space-3xl</code></td><td>4rem (64px)</td><td>Section margins</td></tr>
+                        <tr><td><code>--space-4xl</code></td><td>6rem (96px)</td><td>Major sections</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">Border Radius</h3>
+                <table class="spec-table">
+                    <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>--radius-sm</code></td><td>6px</td><td>Small elements</td></tr>
+                        <tr><td><code>--radius-md</code></td><td>12px</td><td>Inputs, small cards</td></tr>
+                        <tr><td><code>--radius-lg</code></td><td>20px</td><td>Cards, sections</td></tr>
+                        <tr><td><code>--radius-xl</code></td><td>32px</td><td>Large containers</td></tr>
+                        <tr><td><code>--radius-full</code></td><td>9999px</td><td>Buttons, badges, avatars</td></tr>
+                    </tbody>
+                </table>
+
+                <h3 style="font-size: 1rem; margin: 1.5rem 0 1rem; color: var(--black);">Grid Container</h3>
+                <table class="spec-table">
+                    <thead><tr><th>Property</th><th>Value</th></tr></thead>
+                    <tbody>
+                        <tr><td>Max Width</td><td>1200px</td></tr>
+                        <tr><td>Horizontal Padding</td><td>24px (1.5rem)</td></tr>
+                        <tr><td>Column Gap</td><td>32px (2rem)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: Responsive -->
+    <section class="section" id="responsive">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Responsive Breakpoints</h2>
+        <p class="section-subtitle">The layout adapts gracefully across three primary breakpoints.</p>
+
+        <div class="responsive-demos">
+            <div class="device-frame">
+                <div class="device-label">Desktop (1025px+)</div>
+                <div class="device-screen desktop">
+                    <div style="padding: 0.5rem;">
+                        <div style="height:20px;background:var(--white);border-bottom:1px solid var(--gray-lighter);margin-bottom:0.5rem;display:flex;align-items:center;padding:0 0.5rem;">
+                            <div style="width:40px;height:6px;background:var(--gray-lighter);border-radius:2px;"></div>
+                            <div style="margin-left:auto;display:flex;gap:0.25rem;">
+                                <div style="width:16px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                                <div style="width:16px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                                <div style="width:16px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                            </div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;padding:0.5rem;">
+                            <div style="display:flex;flex-direction:column;gap:0.25rem;">
+                                <div style="width:70%;height:8px;background:var(--gray-lighter);border-radius:2px;"></div>
+                                <div style="width:50%;height:6px;background:#eee;border-radius:2px;"></div>
+                            </div>
+                            <div style="background:var(--blush);border-radius:4px;height:50px;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.25rem;padding:0.5rem;">
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.25rem;padding:0.5rem;">
+                            <div style="height:40px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                            <div style="height:40px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                            <div style="height:40px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--gray);text-align:left;padding:0 0.5rem;">
+                    <strong>Layout:</strong> Full grid layouts<br>
+                    <strong>Nav:</strong> All links visible<br>
+                    <strong>Cards:</strong> 3-4 column grids
+                </div>
+            </div>
+
+            <div class="device-frame">
+                <div class="device-label">Tablet (769px-1024px)</div>
+                <div class="device-screen tablet">
+                    <div style="padding: 0.5rem;">
+                        <div style="height:20px;background:var(--white);border-bottom:1px solid var(--gray-lighter);margin-bottom:0.5rem;display:flex;align-items:center;padding:0 0.5rem;">
+                            <div style="width:40px;height:6px;background:var(--gray-lighter);border-radius:2px;"></div>
+                            <div style="margin-left:auto;display:flex;gap:0.25rem;">
+                                <div style="width:16px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                                <div style="width:16px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                            </div>
+                        </div>
+                        <div style="padding:0.5rem;">
+                            <div style="width:70%;height:8px;background:var(--gray-lighter);border-radius:2px;margin-bottom:0.25rem;"></div>
+                            <div style="width:50%;height:6px;background:#eee;border-radius:2px;margin-bottom:0.5rem;"></div>
+                            <div style="background:var(--blush);border-radius:4px;height:40px;margin-bottom:0.5rem;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem;padding:0.5rem;">
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:30px;background:var(--cream);border-radius:3px;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.25rem;padding:0.5rem;">
+                            <div style="height:40px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                            <div style="height:40px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--gray);text-align:left;padding:0 0.5rem;">
+                    <strong>Layout:</strong> Single-col hero<br>
+                    <strong>Nav:</strong> Condensed links<br>
+                    <strong>Cards:</strong> 2 column grids
+                </div>
+            </div>
+
+            <div class="device-frame">
+                <div class="device-label">Mobile (&lt;768px)</div>
+                <div class="device-screen mobile">
+                    <div style="padding: 0.375rem;">
+                        <div style="height:16px;background:var(--white);border-bottom:1px solid var(--gray-lighter);margin-bottom:0.375rem;display:flex;align-items:center;justify-content:space-between;padding:0 0.25rem;">
+                            <div style="width:30px;height:4px;background:var(--gray-lighter);border-radius:2px;"></div>
+                            <div style="display:flex;flex-direction:column;gap:2px;">
+                                <div style="width:12px;height:1.5px;background:var(--gray-lighter);"></div>
+                                <div style="width:12px;height:1.5px;background:var(--gray-lighter);"></div>
+                                <div style="width:12px;height:1.5px;background:var(--gray-lighter);"></div>
+                            </div>
+                        </div>
+                        <div style="padding:0.375rem;">
+                            <div style="width:70%;height:6px;background:var(--gray-lighter);border-radius:2px;margin-bottom:0.25rem;"></div>
+                            <div style="width:50%;height:4px;background:#eee;border-radius:2px;margin-bottom:0.375rem;"></div>
+                            <div style="background:var(--blush);border-radius:3px;height:35px;margin-bottom:0.375rem;"></div>
+                            <div style="width:80%;height:20px;background:var(--coral);opacity:0.2;border-radius:10px;margin-bottom:0.375rem;"></div>
+                        </div>
+                        <div style="padding:0.375rem;display:flex;flex-direction:column;gap:0.25rem;">
+                            <div style="height:25px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:25px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:25px;background:var(--cream);border-radius:3px;"></div>
+                            <div style="height:25px;background:var(--cream);border-radius:3px;"></div>
+                        </div>
+                        <div style="padding:0.375rem;display:flex;flex-direction:column;gap:0.25rem;">
+                            <div style="height:35px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                            <div style="height:35px;background:var(--white);border:1px solid var(--gray-lighter);border-radius:3px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem;font-size:0.75rem;color:var(--gray);text-align:left;padding:0 0.5rem;">
+                    <strong>Layout:</strong> Stacked single-col<br>
+                    <strong>Nav:</strong> Hamburger menu<br>
+                    <strong>Cards:</strong> Full-width stacked
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <table class="spec-table">
+                <thead><tr><th>Breakpoint</th><th>Width</th><th>Grid Columns</th><th>Navigation</th><th>Key Changes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Desktop</strong></td><td>1025px+</td><td>4-col props, 3-col cards</td><td>Full horizontal nav + CTA button</td><td>2-col hero, full illustrations</td></tr>
+                    <tr><td><strong>Tablet</strong></td><td>769px - 1024px</td><td>2-col props, 2-col cards</td><td>Condensed nav links</td><td>Single-col hero, stacked sections</td></tr>
+                    <tr><td><strong>Mobile</strong></td><td>&lt; 768px</td><td>1-col everything</td><td>Hamburger menu</td><td>Stacked layout, full-width CTAs</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SECTION: Shadows & Effects -->
+    <section class="section" id="effects">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Shadows &amp; Effects</h2>
+        <p class="section-subtitle">Elevation system and interactive effects used throughout the design.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+            <div style="background: var(--white); border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Shadow SM</div>
+                <code style="font-size: 0.7rem; color: var(--gray);">0 1px 2px rgba(0,0,0,0.05)</code>
+                <div style="font-size: 0.75rem; color: var(--gray-light); margin-top: 0.5rem;">Cards at rest</div>
+            </div>
+            <div style="background: var(--white); border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Shadow MD</div>
+                <code style="font-size: 0.7rem; color: var(--gray);">0 4px 12px rgba(0,0,0,0.08)</code>
+                <div style="font-size: 0.75rem; color: var(--gray-light); margin-top: 0.5rem;">Buttons, small cards</div>
+            </div>
+            <div style="background: var(--white); border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.12);">
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Shadow LG</div>
+                <code style="font-size: 0.7rem; color: var(--gray);">0 12px 40px rgba(0,0,0,0.12)</code>
+                <div style="font-size: 0.75rem; color: var(--gray-light); margin-top: 0.5rem;">Hover state, modals</div>
+            </div>
+            <div style="background: var(--white); border-radius: 12px; padding: 2rem; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.15);">
+                <div style="font-weight: 600; margin-bottom: 0.5rem;">Shadow XL</div>
+                <code style="font-size: 0.7rem; color: var(--gray);">0 24px 60px rgba(0,0,0,0.15)</code>
+                <div style="font-size: 0.75rem; color: var(--gray-light); margin-top: 0.5rem;">Large overlays</div>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div style="background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">Interactive Transitions</h3>
+                <table class="spec-table">
+                    <tbody>
+                        <tr><td><strong>Fast</strong></td><td><code>0.15s ease</code></td><td>Color changes, focus</td></tr>
+                        <tr><td><strong>Base</strong></td><td><code>0.25s ease</code></td><td>Hover lifts, transforms</td></tr>
+                        <tr><td><strong>Card Hover</strong></td><td><code>translateY(-4px)</code></td><td>Lift + shadow-lg</td></tr>
+                        <tr><td><strong>Button Hover</strong></td><td><code>translateY(-2px)</code></td><td>Subtle lift + glow</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="background: var(--white); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+                <h3 style="font-size: 1rem; margin-bottom: 1rem; color: var(--black);">Gradients</h3>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 60px; height: 30px; border-radius: 6px; background: linear-gradient(135deg, #E85A4F, #C97B5D);"></div>
+                        <div><div style="font-size: 0.8125rem; font-weight: 600;">Primary</div><code style="font-size: 0.7rem; color: var(--gray);">coral &rarr; terracotta</code></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 60px; height: 30px; border-radius: 6px; background: linear-gradient(135deg, #FF7B6F, #D4A853);"></div>
+                        <div><div style="font-size: 0.8125rem; font-weight: 600;">Warm</div><code style="font-size: 0.7rem; color: var(--gray);">coral-light &rarr; gold</code></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div style="width: 60px; height: 30px; border-radius: 6px; background: linear-gradient(180deg, #FDF8F3, #FFFFFF);"></div>
+                        <div><div style="font-size: 0.8125rem; font-weight: 600;">Subtle</div><code style="font-size: 0.7rem; color: var(--gray);">cream &rarr; white</code></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: var(--charcoal); color: var(--gray-light); padding: 3rem 2rem; margin-top: 4rem; text-align: center;">
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h3 style="color: var(--white); font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 0.5rem;">
+                ElevateHer Design System
+            </h3>
+            <p style="font-size: 0.875rem; margin-bottom: 1rem;">
+                Wireframes &amp; visual design documentation for DJTS-13
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; font-size: 0.8125rem;">
+                <span>Created: March 2026</span>
+                <span>Version: 1.0</span>
+                <span>Status: Complete</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
